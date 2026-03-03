@@ -1,9 +1,6 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
-import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusException;
-import com.kgj0314.e_commerce_backend.domain.exception.CannotChangeStatusException;
-import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
-import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughQuantityException;
+import com.kgj0314.e_commerce_backend.domain.exception.*;
 import com.kgj0314.e_commerce_backend.presentation.dto.ErrorMessageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +31,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessageDto> handleNotEnoughQuantity(NotEnoughQuantityException ex) {
         ErrorMessageDto errorMessageDto = new ErrorMessageDto(ex.getMessage());
         return new ResponseEntity<>(errorMessageDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(UsedEmailException.class)
+    public ResponseEntity<ErrorMessageDto> handleUsedEmail(UsedEmailException ex) {
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(ex.getMessage());
+        return new ResponseEntity<>(errorMessageDto, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UsedUsernameException.class)
+    public ResponseEntity<ErrorMessageDto> handleUsedUsername(UsedUsernameException ex) {
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(ex.getMessage());
+        return new ResponseEntity<>(errorMessageDto, HttpStatus.CONFLICT);
     }
 }

@@ -40,6 +40,7 @@ dependencies {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 tasks.named('test') {

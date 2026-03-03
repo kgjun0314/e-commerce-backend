@@ -53,9 +53,4 @@ public class ProductService {
                 product.getStock().getQuantity()
         );
     }
-
-    @Transactional
-    public Product findById(Long id) {
-        return productJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문입니다."));
-    }
 }

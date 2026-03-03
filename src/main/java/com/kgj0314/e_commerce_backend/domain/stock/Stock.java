@@ -17,7 +17,7 @@ public class Stock {
     private Long quantity;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     public void increase(Long quantity) {
