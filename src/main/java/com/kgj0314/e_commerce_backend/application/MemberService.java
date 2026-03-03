@@ -4,8 +4,8 @@ import com.kgj0314.e_commerce_backend.domain.exception.UsedEmailException;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedUsernameException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.infrastructure.MemberJpaRepository;
-import com.kgj0314.e_commerce_backend.presentation.dto.MemberRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.MemberResponseDto;
+import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupRequestDto;
+import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,11 +20,11 @@ public class MemberService {
     private final MemberJpaRepository memberJpaRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public MemberResponseDto create(MemberRequestDto memberRequestDto) {
+    public MemberSignupResponseDto create(MemberSignupRequestDto memberSignupRequestDto) {
         Member member = new Member();
-        member.setEmail(memberRequestDto.getEmail());
-        member.setUsername(memberRequestDto.getUsername());
-        member.setPassword(passwordEncoder.encode(memberRequestDto.getPassword()));
+        member.setEmail(memberSignupRequestDto.getEmail());
+        member.setUsername(memberSignupRequestDto.getUsername());
+        member.setPassword(passwordEncoder.encode(memberSignupRequestDto.getPassword()));
         member.setCreatedDate(LocalDateTime.now());
         try {
             memberJpaRepository.save(member);
@@ -39,7 +39,7 @@ public class MemberService {
                 }
             }
         }
-        return new MemberResponseDto(
+        return new MemberSignupResponseDto(
                 member.getEmail(),
                 member.getEmail()
         );
