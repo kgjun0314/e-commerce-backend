@@ -1,10 +1,12 @@
 package com.kgj0314.e_commerce_backend.application;
 
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
+import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
+import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderResponseDto;
@@ -22,22 +24,26 @@ import java.util.List;
 public class OrderService {
     private final OrderJpaRepository orderJpaRepository;
     private final StockService stockService;
+    private final WalletService walletService;
 
     @Transactional
-    public OrderResponseDto create(List<OrderRequestDto> orderRequestDtos) {
+    public OrderResponseDto create(Member member, List<OrderRequestDto> orderRequestDtos) {
         orderRequestDtos.sort(
                 Comparator.comparing(OrderRequestDto::getProductId)
         );
         Order order = new Order();
         orderRequestDtos
                 .forEach(orderRequestDto -> {
+                    Wallet wallet = walletService.findByMemberIdWithLock(member.getId());
                     Long productId = orderRequestDto.getProductId();
                     Stock stock = stockService.findByProductIdWithLock(productId);
                     stockService.decrease(stock, orderRequestDto.getQuantity());
                     Product product = stock.getProduct();
+                    walletService.decrease(wallet, product.getPrice() * orderRequestDto.getQuantity());
                     OrderProduct orderProduct = new OrderProduct(product, product.getPrice(), orderRequestDto.getQuantity());
                     order.addOrderProduct(orderProduct);
                 });
+        order.setMember(member);
         orderJpaRepository.save(order);
         return getOrderResponseDto(order);
     }

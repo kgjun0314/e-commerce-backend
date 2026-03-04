@@ -33,6 +33,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMessageDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(NotEnoughBalanceException.class)
+    public ResponseEntity<ErrorMessageDto> handleNotEnoughBalance(NotEnoughBalanceException ex) {
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(ex.getMessage());
+        return new ResponseEntity<>(errorMessageDto, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UsedEmailException.class)
     public ResponseEntity<ErrorMessageDto> handleUsedEmail(UsedEmailException ex) {
         ErrorMessageDto errorMessageDto = new ErrorMessageDto(ex.getMessage());

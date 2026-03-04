@@ -1,10 +1,12 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
 import com.kgj0314.e_commerce_backend.application.OrderProductService;
+import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductResponseDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductStatusRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +30,8 @@ public class OrderProductController {
     }
 
     @PatchMapping("/cancel/{id}")
-    public ResponseEntity<OrderProductResponseDto> cancel(@PathVariable Long id) {
-        OrderProductResponseDto orderProductResponseDto = orderProductService.cancel(id);
+    public ResponseEntity<OrderProductResponseDto> cancel(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long id) {
+        OrderProductResponseDto orderProductResponseDto = orderProductService.cancel(customUserDetails.getMember(), id);
         return ResponseEntity.ok(orderProductResponseDto);
     }
 

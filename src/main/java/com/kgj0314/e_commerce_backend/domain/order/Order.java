@@ -1,5 +1,6 @@
 package com.kgj0314.e_commerce_backend.domain.order;
 
+import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProductStatus;
 import jakarta.persistence.*;
@@ -21,6 +22,10 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
     @CreatedDate

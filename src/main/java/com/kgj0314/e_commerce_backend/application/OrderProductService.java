@@ -3,10 +3,14 @@ package com.kgj0314.e_commerce_backend.application;
 import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.CannotChangeStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
+import com.kgj0314.e_commerce_backend.domain.exception.MemberIdMismatchException;
+import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProductStatus;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
+import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderProductJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +27,7 @@ public class OrderProductService {
     private final OrderProductJpaRepository orderProductJpaRepository;
     private final StockService stockService;
     private final OrderService orderService;
+    private final WalletService walletService;
 
     @Transactional(readOnly = true)
     public OrderProductResponseDto findById(Long id) {
@@ -51,13 +57,18 @@ public class OrderProductService {
     }
 
     @Transactional
-    public OrderProductResponseDto cancel(Long id) {
+    public OrderProductResponseDto cancel(Member member, Long id) {
         OrderProduct orderProduct = orderProductJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문 정보입니다."));
+        if(!member.getId().equals(orderProduct.getOrder().getMember().getId())) {
+            throw new MemberIdMismatchException("리소스의 소유자와 로그인 사용자가 서로 다릅니다.");
+        }
         OrderProductStatus status = orderProduct.getStatus();
         status.checkCancellable();
         Product product = orderProduct.getProduct();
         Stock stock = stockService.findByProductIdWithLock(product.getId());
         stockService.increase(stock, orderProduct.getQuantity());
+        Wallet wallet = walletService.findByMemberIdWithLock(member.getId());
+        walletService.increase(wallet, orderProduct.getTotalPrice());
         orderProduct.setStatus(OrderProductStatus.CANCELED);
         return getOrderProductResponseDto(orderProduct, product);
     }
