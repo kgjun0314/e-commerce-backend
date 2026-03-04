@@ -3,7 +3,8 @@ package com.kgj0314.e_commerce_backend.application;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedEmailException;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedUsernameException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
-import com.kgj0314.e_commerce_backend.infrastructure.MemberJpaRepository;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
+import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class MemberService {
         member.setEmail(memberSignupRequestDto.getEmail());
         member.setUsername(memberSignupRequestDto.getUsername());
         member.setPassword(passwordEncoder.encode(memberSignupRequestDto.getPassword()));
+        member.setRole(Role.ROLE_USER);
         member.setCreatedDate(LocalDateTime.now());
         try {
             memberJpaRepository.save(member);

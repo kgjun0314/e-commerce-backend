@@ -1,4 +1,4 @@
-package com.kgj0314.e_commerce_backend.infrastructure;
+package com.kgj0314.e_commerce_backend.infrastructure.persistence;
 
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;

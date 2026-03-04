@@ -1,11 +1,9 @@
 package com.kgj0314.e_commerce_backend.application;
 
-import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
-import com.kgj0314.e_commerce_backend.infrastructure.ProductJpaRepository;
+import com.kgj0314.e_commerce_backend.infrastructure.persistence.ProductJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.ProductRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductResponseDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

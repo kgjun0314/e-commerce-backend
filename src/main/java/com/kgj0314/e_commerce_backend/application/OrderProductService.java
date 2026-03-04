@@ -7,7 +7,7 @@ import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProductStatus;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
-import com.kgj0314.e_commerce_backend.infrastructure.OrderProductJpaRepository;
+import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderProductJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

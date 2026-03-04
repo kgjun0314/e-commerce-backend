@@ -5,7 +5,7 @@ import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
-import com.kgj0314.e_commerce_backend.infrastructure.OrderJpaRepository;
+import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderResponseDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductResponseDto;

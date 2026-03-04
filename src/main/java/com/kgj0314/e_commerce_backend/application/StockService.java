@@ -3,7 +3,7 @@ package com.kgj0314.e_commerce_backend.application;
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughQuantityException;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
-import com.kgj0314.e_commerce_backend.infrastructure.StockJpaRepository;
+import com.kgj0314.e_commerce_backend.infrastructure.persistence.StockJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
