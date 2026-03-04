@@ -6,6 +6,7 @@ import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductResponseDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductStatusRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class OrderProductController {
         return ResponseEntity.ok(orderProductResponseDto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/status/{id}")
     public ResponseEntity<OrderProductResponseDto> changeStatus(@PathVariable Long id, @RequestBody OrderProductStatusRequestDto orderProductStatusRequestDto) {
         OrderProductResponseDto orderProductResponseDto = orderProductService.changeStatus(id, orderProductStatusRequestDto);
