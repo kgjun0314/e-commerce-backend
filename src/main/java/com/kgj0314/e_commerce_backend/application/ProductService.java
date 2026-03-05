@@ -41,7 +41,6 @@ public class ProductService {
         stock.setQuantity(productRequestDto.getQuantity());
         stock.setProduct(product);
         product.setStock(stock);
-        product.setCreatedDate(LocalDateTime.now());
         productJpaRepository.save(product);
 
         return new ProductResponseDto(

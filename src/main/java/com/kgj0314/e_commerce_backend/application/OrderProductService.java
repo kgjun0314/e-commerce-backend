@@ -68,7 +68,7 @@ public class OrderProductService {
         Stock stock = stockService.findByProductIdWithLock(product.getId());
         stockService.increase(stock, orderProduct.getQuantity());
         Wallet wallet = walletService.findByMemberIdWithLock(member.getId());
-        walletService.increase(wallet, orderProduct.getTotalPrice());
+        walletService.increase(wallet, orderProduct.getTotalPrice(), orderProduct.getId());
         orderProduct.setStatus(OrderProductStatus.CANCELED);
         return getOrderProductResponseDto(orderProduct, product);
     }

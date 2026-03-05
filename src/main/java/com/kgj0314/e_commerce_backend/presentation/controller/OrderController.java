@@ -19,7 +19,7 @@ public class OrderController {
 
     @PostMapping("/create")
     public ResponseEntity<OrderResponseDto> create(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<OrderRequestDto> orderRequestDtos) {
-        OrderResponseDto orderResponseDto = orderService.create(customUserDetails.getMember(), orderRequestDtos);
+        OrderResponseDto orderResponseDto = orderService.create(customUserDetails.getMember().getId(), orderRequestDtos);
         return ResponseEntity.ok(orderResponseDto);
     }
 

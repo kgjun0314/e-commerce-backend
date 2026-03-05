@@ -1,5 +1,6 @@
 package com.kgj0314.e_commerce_backend.domain.order;
 
+import com.kgj0314.e_commerce_backend.domain.BaseEntity;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProductStatus;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Getter @Setter
-public class Order {
+public class Order extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "order_id")
     private Long id;
@@ -31,13 +32,9 @@ public class Order {
     @CreatedDate
     private LocalDateTime createdDate;
 
-    public Order() {
-        this.createdDate = LocalDateTime.now();
-    }
-
     public void addOrderProduct(OrderProduct orderProduct) {
         orderProduct.setOrder(this);
-        this.orderProducts.add(orderProduct);
+        orderProducts.add(orderProduct);
     }
 
     public Long getTotalPrice() {

@@ -29,11 +29,8 @@ public class MemberService {
         member.setUsername(memberSignupRequestDto.getUsername());
         member.setPassword(passwordEncoder.encode(memberSignupRequestDto.getPassword()));
         Wallet wallet = new Wallet();
-        wallet.setBalance(0L);
         wallet.setMember(member);
         member.setWallet(wallet);
-        member.setRole(Role.ROLE_USER);
-        member.setCreatedDate(LocalDateTime.now());
         try {
             memberJpaRepository.save(member);
         } catch (DataIntegrityViolationException e) {
@@ -51,5 +48,9 @@ public class MemberService {
                 member.getEmail(),
                 member.getEmail()
         );
+    }
+
+    public Member findById(Long id) {
+        return memberJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
     }
 }

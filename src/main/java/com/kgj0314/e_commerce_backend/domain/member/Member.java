@@ -1,5 +1,6 @@
 package com.kgj0314.e_commerce_backend.domain.member;
 
+import com.kgj0314.e_commerce_backend.domain.BaseEntity;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "members")
 @Getter @Setter
-public class Member {
+public class Member extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
@@ -37,7 +38,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false)
-    @CreatedDate
-    private LocalDateTime createdDate;
+    public Member() {
+        this.role = Role.ROLE_USER;
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
+        order.setMember(this);
+    }
 }

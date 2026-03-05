@@ -1,5 +1,6 @@
 package com.kgj0314.e_commerce_backend.domain.product;
 
+import com.kgj0314.e_commerce_backend.domain.BaseEntity;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "products")
 @Getter @Setter
-public class Product {
+public class Product extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "product_id")
     private Long id;
@@ -24,8 +25,4 @@ public class Product {
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Stock stock;
-
-    @Column(nullable = false)
-    @CreatedDate
-    private LocalDateTime createdDate;
 }

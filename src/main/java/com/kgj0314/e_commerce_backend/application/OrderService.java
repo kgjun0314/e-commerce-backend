@@ -7,6 +7,8 @@ import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
+import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
+import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransactionType;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderResponseDto;
@@ -27,24 +29,25 @@ public class OrderService {
     private final WalletService walletService;
 
     @Transactional
-    public OrderResponseDto create(Member member, List<OrderRequestDto> orderRequestDtos) {
+    public OrderResponseDto create(Long memberId, List<OrderRequestDto> orderRequestDtos) {
         orderRequestDtos.sort(
                 Comparator.comparing(OrderRequestDto::getProductId)
         );
         Order order = new Order();
+        Wallet wallet = walletService.findByMemberIdWithLock(memberId);
         orderRequestDtos
                 .forEach(orderRequestDto -> {
-                    Wallet wallet = walletService.findByMemberIdWithLock(member.getId());
                     Long productId = orderRequestDto.getProductId();
                     Stock stock = stockService.findByProductIdWithLock(productId);
                     stockService.decrease(stock, orderRequestDto.getQuantity());
                     Product product = stock.getProduct();
-                    walletService.decrease(wallet, product.getPrice() * orderRequestDto.getQuantity());
                     OrderProduct orderProduct = new OrderProduct(product, product.getPrice(), orderRequestDto.getQuantity());
                     order.addOrderProduct(orderProduct);
                 });
-        order.setMember(member);
-        orderJpaRepository.save(order);
+        Member member = wallet.getMember();
+        member.addOrder(order);
+        Order savedOrder = orderJpaRepository.save(order);
+        walletService.decrease(wallet, savedOrder.getTotalPrice(), savedOrder.getId());
         return getOrderResponseDto(order);
     }
 
