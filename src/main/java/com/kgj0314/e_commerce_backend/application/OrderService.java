@@ -32,12 +32,12 @@ public class OrderService {
                 Comparator.comparing(OrderRequestDto::getProductId)
         );
         Order order = new Order();
-        Wallet wallet = walletService.findByMemberIdWithLock(memberId);
+        Wallet wallet = walletService.getWalletWithLock(memberId);
         orderRequestDtos
                 .forEach(orderRequestDto -> {
                     Long productId = orderRequestDto.getProductId();
-                    Stock stock = stockService.findByProductIdWithLock(productId);
-                    stockService.decrease(stock, orderRequestDto.getQuantity());
+                    Stock stock = stockService.getStockWithLock(productId);
+                    stockService.decreaseStock(stock, orderRequestDto.getQuantity());
                     Product product = stock.getProduct();
                     OrderProduct orderProduct = new OrderProduct(product, product.getPrice(), orderRequestDto.getQuantity());
                     order.addOrderProduct(orderProduct);
@@ -45,7 +45,7 @@ public class OrderService {
         Member member = wallet.getMember();
         member.addOrder(order);
         Order savedOrder = orderJpaRepository.save(order);
-        walletService.decrease(wallet, savedOrder.getTotalPrice(), savedOrder.getId());
+        walletService.decreaseBalance(wallet, savedOrder.getTotalPrice(), savedOrder.getId());
         return getOrderResponseDto(order);
     }
 
@@ -59,7 +59,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderResponseDto> getOrders(Long memberId) {
         List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
-        List<Order> orders = orderJpaRepository.findAllByMemberIdFetchJoin(memberId);
+        List<Order> orders = orderJpaRepository.findByMemberIdFetchJoin(memberId);
         orders.
                 forEach(order -> {
                     orderResponseDtos.add(getOrderResponseDto(order));

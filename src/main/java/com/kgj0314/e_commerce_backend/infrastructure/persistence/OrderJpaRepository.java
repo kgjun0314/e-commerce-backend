@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface OrderJpaRepository extends JpaRepository<Order, Long> {
-    List<Order> findAllByMemberId(Long memberId);
+    List<Order> findByMemberId(Long memberId);
 
     @Query("""
         SELECT DISTINCT o FROM Order o
@@ -19,7 +19,7 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
         JOIN FETCH p.stock
         WHERE o.member.id = :memberId
     """)
-    List<Order> findAllByMemberIdFetchJoin(@Param("memberId") Long memberId);
+    List<Order> findByMemberIdFetchJoin(@Param("memberId") Long memberId);
 
     @Query("""
         SELECT DISTINCT o FROM Order o

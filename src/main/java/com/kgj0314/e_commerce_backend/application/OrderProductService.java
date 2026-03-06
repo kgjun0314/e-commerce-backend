@@ -66,10 +66,10 @@ public class OrderProductService {
         OrderProductStatus status = orderProduct.getStatus();
         status.checkCancellable();
         Product product = orderProduct.getProduct();
-        Stock stock = stockService.findByProductIdWithLock(product.getId());
-        stockService.increase(stock, orderProduct.getQuantity());
-        Wallet wallet = walletService.findByMemberIdWithLock(member.getId());
-        walletService.increase(wallet, orderProduct.getTotalPrice(), orderProduct.getId());
+        Stock stock = stockService.getStockWithLock(product.getId());
+        stockService.increaseStock(stock, orderProduct.getQuantity());
+        Wallet wallet = walletService.getWalletWithLock(member.getId());
+        walletService.increaseBalance(wallet, orderProduct.getTotalPrice(), orderProduct.getId());
         orderProduct.setStatus(OrderProductStatus.CANCELED);
         return getOrderProductResponseDto(orderProduct, product);
     }

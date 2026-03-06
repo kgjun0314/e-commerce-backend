@@ -12,8 +12,8 @@ import java.util.List;
 public interface ProductJpaRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p join fetch p.stock")
-    List<Product> findAllWithStock();
+    List<Product> findAllFetchJoin();
 
     @Query("select p from Product p join fetch p.stock where p.id = :id")
-    Product findByIdWithStock(@Param("id") Long id);
+    Product findByIdFetchJoin(@Param("id") Long id);
 }

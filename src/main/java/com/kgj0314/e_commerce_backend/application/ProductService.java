@@ -19,7 +19,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductResponseDto> getProducts() {
-        List<Product> products = productJpaRepository.findAllWithStock();
+        List<Product> products = productJpaRepository.findAllFetchJoin();
         return products.stream()
                 .map(product -> {
                     return new ProductResponseDto(
@@ -34,7 +34,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductResponseDto getProduct(Long id) {
-        Product product = productJpaRepository.findByIdWithStock(id);
+        Product product = productJpaRepository.findByIdFetchJoin(id);
         return new ProductResponseDto(
                             product.getId(),
                             product.getName(),
