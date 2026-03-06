@@ -4,11 +4,10 @@ import com.kgj0314.e_commerce_backend.domain.BaseEntity;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +19,15 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @NotNull
+    @Column(unique = true)
     private String email;
 
-    @Column(unique = true, nullable = false)
+    @NotNull
+    @Column(unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @NotNull
     private String password;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

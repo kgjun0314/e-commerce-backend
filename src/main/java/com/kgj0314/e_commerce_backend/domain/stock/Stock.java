@@ -3,6 +3,7 @@ package com.kgj0314.e_commerce_backend.domain.stock;
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughQuantityException;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,11 +15,12 @@ public class Stock {
     @Column(name = "stock_id")
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private Long quantity;
 
+    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     public void increaseQuantity(Long quantity) {

@@ -5,6 +5,7 @@ import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProductStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,11 +25,12 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(nullable = false)
+    @NotNull
     @CreatedDate
     private LocalDateTime createdDate;
 

@@ -2,6 +2,7 @@ package com.kgj0314.e_commerce_backend.domain.wallet;
 
 import com.kgj0314.e_commerce_backend.domain.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,16 +18,18 @@ public class WalletTransaction extends BaseEntity {
 
     private Long orderProductId;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "wallet_id", nullable = false)
+    @JoinColumn(name = "wallet_id")
     private Wallet wallet;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private WalletTransactionType type;
 
-    @Column(nullable = false)
+    @NotNull
     private Long amount;
 
-    @Column(nullable = false)
+    @NotNull
     private Long balanceAfter;
 }

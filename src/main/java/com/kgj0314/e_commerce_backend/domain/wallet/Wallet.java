@@ -4,6 +4,7 @@ import com.kgj0314.e_commerce_backend.domain.BaseEntity;
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughBalanceException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -20,11 +21,12 @@ public class Wallet extends BaseEntity {
     @Column(name = "wallet_id")
     private Long id;
 
+    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(nullable = false)
+    @NotNull
     private Long balance;
 
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
