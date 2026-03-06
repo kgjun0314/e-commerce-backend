@@ -1,4 +1,4 @@
-package com.kgj0314.e_commerce_backend.presentation.dto;
+package com.kgj0314.e_commerce_backend.application.dto;
 
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransactionType;
 import lombok.AllArgsConstructor;

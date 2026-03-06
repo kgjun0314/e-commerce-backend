@@ -1,11 +1,12 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
+import com.kgj0314.e_commerce_backend.application.command.WalletChargeCommand;
 import com.kgj0314.e_commerce_backend.application.service.WalletService;
 import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeResponseDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.WalletResponseDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.WalletTransactionResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.WalletChargeResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.WalletResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +22,8 @@ public class WalletController {
 
     @PostMapping("/charge")
     public ResponseEntity<WalletChargeResponseDto> chargeWallet(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody WalletChargeRequestDto walletChargeRequestDto) {
-        WalletChargeResponseDto walletChargeResponseDto = walletService.chargeWallet(customUserDetails.getMember().getId(), walletChargeRequestDto);
+        WalletChargeCommand walletChargeCommand = new WalletChargeCommand(walletChargeRequestDto.getAmount());
+        WalletChargeResponseDto walletChargeResponseDto = walletService.chargeWallet(customUserDetails.getMember().getId(), walletChargeCommand);
         return ResponseEntity.ok(walletChargeResponseDto);
     }
 

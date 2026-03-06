@@ -1,10 +1,11 @@
 package com.kgj0314.e_commerce_backend.application.service;
 
+import com.kgj0314.e_commerce_backend.application.command.ProductCommand;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.ProductJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.ProductRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.ProductResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,12 +44,12 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
+    public ProductResponseDto createProduct(ProductCommand productCommand) {
         Product product = new Product();
-        product.setName(productRequestDto.getName());
-        product.setPrice(productRequestDto.getPrice());
+        product.setName(productCommand.getName());
+        product.setPrice(productCommand.getPrice());
         Stock stock = new Stock();
-        stock.setQuantity(productRequestDto.getQuantity());
+        stock.setQuantity(productCommand.getQuantity());
         stock.setProduct(product);
         product.setStock(stock);
         productJpaRepository.save(product);

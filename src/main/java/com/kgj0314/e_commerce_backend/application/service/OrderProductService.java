@@ -1,5 +1,8 @@
 package com.kgj0314.e_commerce_backend.application.service;
 
+import com.kgj0314.e_commerce_backend.application.command.OrderProductStatusCommand;
+import com.kgj0314.e_commerce_backend.application.dto.OrderProductResponseDto;
+import com.kgj0314.e_commerce_backend.application.query.OrderProductStatusQuery;
 import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.CannotChangeStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
@@ -36,8 +39,8 @@ public class OrderProductService {
     }
 
     @Transactional
-    public OrderProductResponseDto changeStatus(Long id, OrderProductStatusRequestDto orderProductStatusRequestDto) {
-        OrderProductStatus nextStatus = orderProductStatusRequestDto.getStatus();
+    public OrderProductResponseDto changeStatus(Long id, OrderProductStatusCommand orderProductStatusCommand) {
+        OrderProductStatus nextStatus = orderProductStatusCommand.getStatus();
         if(nextStatus == OrderProductStatus.CANCELED) {
             throw new CannotCancellableStatusException("주문 취소 API를 호출하세요.");
         }
@@ -73,8 +76,8 @@ public class OrderProductService {
     }
 
     @Transactional
-    public List<OrderProductResponseDto> getOrderProducts(OrderProductStatusRequestDto orderProductStatusRequestDto) {
-        OrderProductStatus status = orderProductStatusRequestDto.getStatus();
+    public List<OrderProductResponseDto> getOrderProducts(OrderProductStatusQuery orderProductStatusQuery) {
+        OrderProductStatus status = orderProductStatusQuery.getStatus();
         List<OrderProduct> orderProducts = orderProductJpaRepository.findByStatusFetchJoin(status);
         List<OrderProductResponseDto> orderProductResponseDtos = new ArrayList<>();
         orderProducts

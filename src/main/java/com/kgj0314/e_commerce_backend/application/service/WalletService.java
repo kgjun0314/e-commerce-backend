@@ -1,13 +1,14 @@
 package com.kgj0314.e_commerce_backend.application.service;
 
+import com.kgj0314.e_commerce_backend.application.command.WalletChargeCommand;
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeResponseDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.WalletResponseDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.WalletTransactionResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.WalletChargeResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.WalletResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,9 +60,9 @@ public class WalletService {
     }
 
     @Transactional
-    public WalletChargeResponseDto chargeWallet(Long memberId, WalletChargeRequestDto walletChargeRequestDto){
+    public WalletChargeResponseDto chargeWallet(Long memberId, WalletChargeCommand walletChargeCommand){
         Wallet wallet = getWalletWithLock(memberId);
-        Long amount = walletChargeRequestDto.getAmount();
+        Long amount = walletChargeCommand.getAmount();
         wallet.increaseBalance(amount);
         walletTransactionService.createChargeTransaction(wallet, amount);
         return new WalletChargeResponseDto(

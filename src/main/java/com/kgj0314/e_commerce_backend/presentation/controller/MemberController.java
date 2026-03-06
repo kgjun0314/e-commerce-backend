@@ -1,12 +1,13 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
+import com.kgj0314.e_commerce_backend.application.command.MemberSignupCommand;
 import com.kgj0314.e_commerce_backend.application.service.MemberService;
 import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.infrastructure.security.JwtUtil;
 import com.kgj0314.e_commerce_backend.presentation.dto.MemberLoginRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.MemberLoginResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.MemberLoginResponseDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.MemberSignupResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +28,13 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<MemberSignupResponseDto> signup(@RequestBody MemberSignupRequestDto memberSignupRequestDto){
-        MemberSignupResponseDto memberSignupResponseDto = memberService.createMember(memberSignupRequestDto);
+        MemberSignupCommand memberSignupCommand =
+                new MemberSignupCommand(
+                        memberSignupRequestDto.getEmail(),
+                        memberSignupRequestDto.getUsername(),
+                        memberSignupRequestDto.getPassword()
+                );
+        MemberSignupResponseDto memberSignupResponseDto = memberService.createMember(memberSignupCommand);
         return ResponseEntity.ok(memberSignupResponseDto);
     }
 

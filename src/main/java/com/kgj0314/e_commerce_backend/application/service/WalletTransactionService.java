@@ -4,7 +4,7 @@ import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransactionType;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletTransactionJpaRepository;
-import com.kgj0314.e_commerce_backend.presentation.dto.WalletTransactionResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

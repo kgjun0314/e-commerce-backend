@@ -1,4 +1,4 @@
-package com.kgj0314.e_commerce_backend.presentation.dto;
+package com.kgj0314.e_commerce_backend.application.dto;
 
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProductStatus;
 import lombok.AllArgsConstructor;

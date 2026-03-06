@@ -1,8 +1,10 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
+import com.kgj0314.e_commerce_backend.application.command.OrderProductStatusCommand;
+import com.kgj0314.e_commerce_backend.application.query.OrderProductStatusQuery;
 import com.kgj0314.e_commerce_backend.application.service.OrderProductService;
 import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
-import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.OrderProductResponseDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductStatusRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,8 @@ public class OrderProductController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/status/{id}")
     public ResponseEntity<OrderProductResponseDto> changeStatus(@PathVariable Long id, @RequestBody OrderProductStatusRequestDto orderProductStatusRequestDto) {
-        OrderProductResponseDto orderProductResponseDto = orderProductService.changeStatus(id, orderProductStatusRequestDto);
+        OrderProductStatusCommand orderProductStatusCommand = new OrderProductStatusCommand(orderProductStatusRequestDto.getStatus());
+        OrderProductResponseDto orderProductResponseDto = orderProductService.changeStatus(id, orderProductStatusCommand);
         return ResponseEntity.ok(orderProductResponseDto);
     }
 
@@ -39,7 +42,8 @@ public class OrderProductController {
 
     @GetMapping("/status")
     public ResponseEntity<List<OrderProductResponseDto>> getOrderProducts(@ModelAttribute OrderProductStatusRequestDto OrderProductStatusRequestDto) {
-        List<OrderProductResponseDto> orderProductResponseDtos = orderProductService.getOrderProducts(OrderProductStatusRequestDto);
+        OrderProductStatusQuery orderProductStatusQuery = new OrderProductStatusQuery(OrderProductStatusRequestDto.getStatus());
+        List<OrderProductResponseDto> orderProductResponseDtos = orderProductService.getOrderProducts(orderProductStatusQuery);
         return ResponseEntity.ok(orderProductResponseDtos);
     }
 }

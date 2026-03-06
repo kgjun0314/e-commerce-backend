@@ -1,12 +1,12 @@
 package com.kgj0314.e_commerce_backend.application.service;
 
+import com.kgj0314.e_commerce_backend.application.command.MemberSignupCommand;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedEmailException;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedUsernameException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaRepository;
-import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.MemberSignupResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,11 +19,11 @@ public class MemberService {
     private final MemberJpaRepository memberJpaRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public MemberSignupResponseDto createMember(MemberSignupRequestDto memberSignupRequestDto) {
+    public MemberSignupResponseDto createMember(MemberSignupCommand memberSignupCommand) {
         Member member = new Member();
-        member.setEmail(memberSignupRequestDto.getEmail());
-        member.setUsername(memberSignupRequestDto.getUsername());
-        member.setPassword(passwordEncoder.encode(memberSignupRequestDto.getPassword()));
+        member.setEmail(memberSignupCommand.getEmail());
+        member.setUsername(memberSignupCommand.getUsername());
+        member.setPassword(passwordEncoder.encode(memberSignupCommand.getPassword()));
         Wallet wallet = new Wallet();
         wallet.setMember(member);
         member.setWallet(wallet);

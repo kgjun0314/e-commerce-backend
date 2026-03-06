@@ -1,8 +1,9 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
+import com.kgj0314.e_commerce_backend.application.command.ProductCommand;
 import com.kgj0314.e_commerce_backend.application.service.ProductService;
 import com.kgj0314.e_commerce_backend.presentation.dto.ProductRequestDto;
-import com.kgj0314.e_commerce_backend.presentation.dto.ProductResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +30,12 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto productRequestDto) {
-        ProductResponseDto productResponseDto = productService.createProduct(productRequestDto);
+        ProductCommand productCommand
+                = new ProductCommand(
+                productRequestDto.getName(),
+                productRequestDto.getPrice(),
+                productRequestDto.getQuantity());
+        ProductResponseDto productResponseDto = productService.createProduct(productCommand);
         return ResponseEntity.ok(productResponseDto);
     }
 }

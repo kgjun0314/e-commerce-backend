@@ -1,11 +1,12 @@
-package com.kgj0314.e_commerce_backend.presentation.dto;
+package com.kgj0314.e_commerce_backend.application.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
-public class MemberSignupResponseDto {
+@Getter
+public class MemberSignupCommand {
     private String email;
     private String username;
+    private String password;
 }
