@@ -15,10 +15,6 @@ public class StockService {
 
     @Transactional
     public void decreaseStock(Stock stock, Long quantity) {
-        if (stock.getQuantity() < quantity) {
-            throw new NotEnoughQuantityException("재고가 부족합니다. (상품 ID: " + stock.getProduct().getId() + ")");
-        }
-
         stock.decreaseQuantity(quantity);
     }
 

@@ -24,10 +24,6 @@ public class WalletService {
 
     @Transactional
     public void decreaseBalance(Wallet wallet, Long price, Long orderId){
-        if(wallet.getBalance() < price) {
-            throw new NotEnoughBalanceException("잔액이 부족합니다. (지갑 ID: " + wallet.getId() + ")");
-        }
-
         wallet.decreaseBalance(price);
         walletTransactionService.createOrderTransaction(wallet, orderId, price);
     }
