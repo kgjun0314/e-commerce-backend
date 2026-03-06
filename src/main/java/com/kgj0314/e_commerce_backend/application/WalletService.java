@@ -28,13 +28,13 @@ public class WalletService {
             throw new NotEnoughBalanceException("잔액이 부족합니다. (지갑 ID: " + wallet.getId() + ")");
         }
 
-        wallet.decrease(price);
+        wallet.decreaseBalance(price);
         walletTransactionService.createOrderTransaction(wallet, orderId, price);
     }
 
     @Transactional
     public void increaseBalance(Wallet wallet, Long price, Long orderProductId){
-        wallet.increase(price);
+        wallet.increaseBalance(price);
         walletTransactionService.createRefundTransaction(wallet, orderProductId, price);
     }
 
@@ -67,7 +67,7 @@ public class WalletService {
     public WalletChargeResponseDto chargeWallet(Long memberId, WalletChargeRequestDto walletChargeRequestDto){
         Wallet wallet = getWalletWithLock(memberId);
         Long amount = walletChargeRequestDto.getAmount();
-        wallet.increase(amount);
+        wallet.increaseBalance(amount);
         walletTransactionService.createChargeTransaction(wallet, amount);
         return new WalletChargeResponseDto(
                 wallet.getId(),

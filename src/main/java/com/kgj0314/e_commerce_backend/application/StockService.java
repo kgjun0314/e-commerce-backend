@@ -19,12 +19,12 @@ public class StockService {
             throw new NotEnoughQuantityException("재고가 부족합니다. (상품 ID: " + stock.getProduct().getId() + ")");
         }
 
-        stock.decrease(quantity);
+        stock.decreaseQuantity(quantity);
     }
 
     @Transactional
     public void increaseStock(Stock stock, Long quantity) {
-        stock.increase(quantity);
+        stock.increaseQuantity(quantity);
     }
 
     @Transactional

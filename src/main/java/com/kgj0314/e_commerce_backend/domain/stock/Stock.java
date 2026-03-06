@@ -20,11 +20,11 @@ public class Stock {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    public void increase(Long quantity) {
+    public void increaseQuantity(Long quantity) {
         this.quantity += quantity;
     }
 
-    public void decrease(Long quantity) {
+    public void decreaseQuantity(Long quantity) {
         this.quantity -= quantity;
     }
 }

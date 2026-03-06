@@ -33,11 +33,11 @@ public class Wallet extends BaseEntity {
         this.balance = 0L;
     }
 
-    public void increase(Long price) {
+    public void increaseBalance(Long price) {
         this.balance += price;
     }
 
-    public void decrease(Long price) {
+    public void decreaseBalance(Long price) {
         this.balance -= price;
     }
 
