@@ -32,6 +32,17 @@ public class ProductService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public ProductResponseDto findById(Long id) {
+        Product product = productJpaRepository.findByIdWithStock(id);
+        return new ProductResponseDto(
+                            product.getId(),
+                            product.getName(),
+                            product.getPrice(),
+                            product.getStock().getQuantity()
+        );
+    }
+
     @Transactional
     public ProductResponseDto create(ProductRequestDto productRequestDto) {
         Product product = new Product();

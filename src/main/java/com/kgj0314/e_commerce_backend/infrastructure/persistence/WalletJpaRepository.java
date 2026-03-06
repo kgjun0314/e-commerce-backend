@@ -1,5 +1,6 @@
 package com.kgj0314.e_commerce_backend.infrastructure.persistence;
 
+import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import jakarta.persistence.LockModeType;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,4 +20,11 @@ public interface WalletJpaRepository extends JpaRepository<Wallet, Long> {
     Optional<Wallet> findByMemberIdWithLock(@Param("memberId") Long memberId);
 
     Wallet findByMemberId(Long memberId);
+
+    @Query("""
+        SELECT DISTINCT w FROM Wallet w
+        JOIN FETCH w.transactions t
+        WHERE w.member.id = :memberId
+    """)
+    Wallet findByMemberIdFetchJoin(@Param("memberId") Long memberId);
 }

@@ -26,13 +26,13 @@ public class WalletController {
         return ResponseEntity.ok(walletChargeResponseDto);
     }
 
-    @GetMapping()
+    @GetMapping("/my/balance")
     public ResponseEntity<WalletResponseDto> getBalance(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         WalletResponseDto walletResponseDto = walletService.findByMemberId(customUserDetails.getMember().getId());
         return ResponseEntity.ok(walletResponseDto);
     }
 
-    @GetMapping("/transactions")
+    @GetMapping("/my/transactions")
     public ResponseEntity<List<WalletTransactionResponseDto>> getTransactions(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         List<WalletTransactionResponseDto> WalletTransactionResponseDtos = walletService.getWalletTransactionsByMemberId(customUserDetails.getMember().getId());
         return ResponseEntity.ok(WalletTransactionResponseDtos);

@@ -29,7 +29,7 @@ public class OrderController {
         return ResponseEntity.ok(orderResponseDto);
     }
 
-    @GetMapping()
+    @GetMapping("/my")
     public ResponseEntity<List<OrderResponseDto>> findByMemberId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         List<OrderResponseDto> orderResponseDtos = orderService.findByMemberId(customUserDetails.getMember().getId());
         return ResponseEntity.ok(orderResponseDtos);

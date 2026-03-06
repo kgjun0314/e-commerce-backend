@@ -31,7 +31,8 @@ public class OrderProductService {
 
     @Transactional(readOnly = true)
     public OrderProductResponseDto findById(Long id) {
-        OrderProduct orderProduct = orderProductJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문 정보입니다."));
+//        OrderProduct orderProduct = orderProductJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문 정보입니다."));
+        OrderProduct orderProduct = orderProductJpaRepository.findByIdFetchJoin(id);
         Product product = orderProduct.getProduct();
         return getOrderProductResponseDto(orderProduct, product);
     }
@@ -76,7 +77,7 @@ public class OrderProductService {
     @Transactional
     public List<OrderProductResponseDto> findByStatus(OrderProductStatusRequestDto orderProductStatusRequestDto) {
         OrderProductStatus status = orderProductStatusRequestDto.getStatus();
-        List<OrderProduct> orderProducts = orderProductJpaRepository.findByStatus(status);
+        List<OrderProduct> orderProducts = orderProductJpaRepository.findByStatusFetchJoin(status);
         List<OrderProductResponseDto> orderProductResponseDtos = new ArrayList<>();
         orderProducts
                 .forEach(orderProduct -> {

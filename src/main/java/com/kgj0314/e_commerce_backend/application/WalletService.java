@@ -3,6 +3,7 @@ package com.kgj0314.e_commerce_backend.application;
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughBalanceException;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
+import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeResponseDto;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -51,8 +53,14 @@ public class WalletService {
 
     @Transactional
     public List<WalletTransactionResponseDto> getWalletTransactionsByMemberId(Long memberId){
-        Wallet wallet = walletJpaRepository.findByMemberId(memberId);
-        return walletTransactionService.findByWalletId(wallet.getId());
+        Wallet wallet = walletJpaRepository.findByMemberIdFetchJoin(memberId);
+        List<WalletTransaction> walletTransactions = wallet.getTransactions();
+        List<WalletTransactionResponseDto> walletTransactionResponseDtos = new ArrayList<>();
+        walletTransactions
+                .forEach(walletTransaction -> {
+                    walletTransactionResponseDtos.add(WalletTransactionService.getWalletTransactionResponseDto(walletTransaction));
+                });
+        return walletTransactionResponseDtos;
     }
 
     @Transactional

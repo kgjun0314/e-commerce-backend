@@ -21,6 +21,11 @@ public class ProductController {
         return productService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ProductResponseDto findById(@PathVariable Long id) {
+        return productService.findById(id);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto productRequestDto) {
