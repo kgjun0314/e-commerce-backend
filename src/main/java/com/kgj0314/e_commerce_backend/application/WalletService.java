@@ -6,9 +6,13 @@ import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeResponseDto;
+import com.kgj0314.e_commerce_backend.presentation.dto.WalletResponseDto;
+import com.kgj0314.e_commerce_backend.presentation.dto.WalletTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +39,20 @@ public class WalletService {
     @Transactional
     public Wallet findByMemberIdWithLock(Long memberId){
         return walletJpaRepository.findByMemberIdWithLock(memberId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 지갑 입니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public WalletResponseDto findByMemberId(Long memberId){
+        Wallet wallet = walletJpaRepository.findByMemberId(memberId);
+        return new WalletResponseDto(
+                wallet.getBalance()
+        );
+    }
+
+    @Transactional
+    public List<WalletTransactionResponseDto> getWalletTransactionsByMemberId(Long memberId){
+        Wallet wallet = walletJpaRepository.findByMemberId(memberId);
+        return walletTransactionService.findByWalletId(wallet.getId());
     }
 
     @Transactional

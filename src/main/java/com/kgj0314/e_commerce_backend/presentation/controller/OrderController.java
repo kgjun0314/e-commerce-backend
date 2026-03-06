@@ -28,4 +28,10 @@ public class OrderController {
         OrderResponseDto orderResponseDto = orderService.findById(id);
         return ResponseEntity.ok(orderResponseDto);
     }
+
+    @GetMapping()
+    public ResponseEntity<List<OrderResponseDto>> findByMemberId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        List<OrderResponseDto> orderResponseDtos = orderService.findByMemberId(customUserDetails.getMember().getId());
+        return ResponseEntity.ok(orderResponseDtos);
+    }
 }

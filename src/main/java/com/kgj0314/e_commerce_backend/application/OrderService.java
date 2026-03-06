@@ -7,8 +7,6 @@ import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
-import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
-import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransactionType;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderResponseDto;
@@ -55,6 +53,17 @@ public class OrderService {
     public OrderResponseDto findById(Long id) {
         Order order = orderJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문입니다."));
         return getOrderResponseDto(order);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> findByMemberId(Long memberId) {
+        List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
+        List<Order> orders = orderJpaRepository.findByMemberId(memberId);
+        orders.
+                forEach(order -> {
+                    orderResponseDtos.add(getOrderResponseDto(order));
+                });
+        return orderResponseDtos;
     }
 
     private static OrderResponseDto getOrderResponseDto(Order order) {

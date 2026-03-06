@@ -3,5 +3,8 @@ package com.kgj0314.e_commerce_backend.infrastructure.persistence;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface WalletTransactionJpaRepository extends JpaRepository<WalletTransaction, Long> {
+    List<WalletTransaction> findByWalletId(Long walletId);
 }

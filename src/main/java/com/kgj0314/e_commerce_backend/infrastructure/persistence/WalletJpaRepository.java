@@ -16,4 +16,6 @@ public interface WalletJpaRepository extends JpaRepository<Wallet, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select w from Wallet w where w.member.id = :memberId")
     Optional<Wallet> findByMemberIdWithLock(@Param("memberId") Long memberId);
+
+    Wallet findByMemberId(Long memberId);
 }

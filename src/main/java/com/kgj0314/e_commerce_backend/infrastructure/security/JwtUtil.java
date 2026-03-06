@@ -15,7 +15,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
     private static final String SECRET = "my-secret-key-my-secret-key-my-secret-key";
-    private static final long EXP = 1000 * 60 * 60;
+    private static final long EXP = 1000 * 60 * 60 * 24 * 7;
 
     private Key getKey() {
         return Keys.hmacShaKeyFor(
