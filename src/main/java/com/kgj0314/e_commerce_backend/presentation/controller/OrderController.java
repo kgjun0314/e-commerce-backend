@@ -20,9 +20,9 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/create")
-    public ResponseEntity<OrderResponseDto> createOrder(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<OrderRequestDto> orderRequestDtos) {
+    public ResponseEntity<OrderResponseDto> createOrder(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<OrderRequestDto> orderRequestDtoList) {
         List<OrderCommand> orderCommands = new ArrayList<>();
-        orderRequestDtos
+        orderRequestDtoList
                 .forEach(orderRequestDto -> {
                     OrderCommand orderCommand = new OrderCommand(orderRequestDto.getProductId(), orderRequestDto.getQuantity());
                     orderCommands.add(orderCommand);
@@ -39,7 +39,7 @@ public class OrderController {
 
     @GetMapping("/my")
     public ResponseEntity<List<OrderResponseDto>> getOrders(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        List<OrderResponseDto> orderResponseDtos = orderService.getOrders(customUserDetails.getMember().getId());
-        return ResponseEntity.ok(orderResponseDtos);
+        List<OrderResponseDto> orderResponseDtoList = orderService.getOrders(customUserDetails.getMember().getId());
+        return ResponseEntity.ok(orderResponseDtoList);
     }
 }

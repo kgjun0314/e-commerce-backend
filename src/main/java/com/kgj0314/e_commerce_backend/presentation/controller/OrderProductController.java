@@ -43,7 +43,7 @@ public class OrderProductController {
     @GetMapping("/status")
     public ResponseEntity<List<OrderProductResponseDto>> getOrderProducts(@ModelAttribute OrderProductStatusRequestDto OrderProductStatusRequestDto) {
         OrderProductStatusQuery orderProductStatusQuery = new OrderProductStatusQuery(OrderProductStatusRequestDto.getStatus());
-        List<OrderProductResponseDto> orderProductResponseDtos = orderProductService.getOrderProducts(orderProductStatusQuery);
-        return ResponseEntity.ok(orderProductResponseDtos);
+        List<OrderProductResponseDto> orderProductResponseDtoList = orderProductService.getOrderProducts(orderProductStatusQuery);
+        return ResponseEntity.ok(orderProductResponseDtoList);
     }
 }

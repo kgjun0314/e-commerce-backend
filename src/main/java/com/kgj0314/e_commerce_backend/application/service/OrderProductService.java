@@ -14,7 +14,6 @@ import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderProductJpaRepository;
-import com.kgj0314.e_commerce_backend.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,9 +77,9 @@ public class OrderProductService {
     @Transactional
     public List<OrderProductResponseDto> getOrderProducts(OrderProductStatusQuery orderProductStatusQuery) {
         OrderProductStatus status = orderProductStatusQuery.getStatus();
-        List<OrderProduct> orderProducts = orderProductJpaRepository.findByStatusFetchJoin(status);
+        List<OrderProduct> orderProductList = orderProductJpaRepository.findByStatusFetchJoin(status);
         List<OrderProductResponseDto> orderProductResponseDtos = new ArrayList<>();
-        orderProducts
+        orderProductList
                 .forEach(orderProduct -> {
                     OrderProductResponseDto orderProductResponseDto = getOrderProductResponseDto(orderProduct, orderProduct.getProduct());
                     orderProductResponseDtos.add(orderProductResponseDto);

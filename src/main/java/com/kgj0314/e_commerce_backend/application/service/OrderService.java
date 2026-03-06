@@ -8,7 +8,6 @@ import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderJpaRepository;
-import com.kgj0314.e_commerce_backend.presentation.dto.OrderRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.OrderResponseDto;
 import com.kgj0314.e_commerce_backend.application.dto.OrderProductResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +26,19 @@ public class OrderService {
     private final WalletService walletService;
 
     @Transactional
-    public OrderResponseDto createOrder(Long memberId, List<OrderCommand> orderCommands) {
-        orderCommands.sort(
+    public OrderResponseDto createOrder(Long memberId, List<OrderCommand> orderCommandList) {
+        orderCommandList.sort(
                 Comparator.comparing(OrderCommand::getProductId)
         );
         Order order = new Order();
         Wallet wallet = walletService.getWalletWithLock(memberId);
-        orderCommands
-                .forEach(orderRequestDto -> {
-                    Long productId = orderRequestDto.getProductId();
+        orderCommandList
+                .forEach(orderCommand -> {
+                    Long productId = orderCommand.getProductId();
                     Stock stock = stockService.getStockWithLock(productId);
-                    stockService.decreaseStock(stock, orderRequestDto.getQuantity());
+                    stockService.decreaseStock(stock, orderCommand.getQuantity());
                     Product product = stock.getProduct();
-                    OrderProduct orderProduct = new OrderProduct(product, product.getPrice(), orderRequestDto.getQuantity());
+                    OrderProduct orderProduct = new OrderProduct(product, product.getPrice(), orderCommand.getQuantity());
                     order.addOrderProduct(orderProduct);
                 });
         Member member = wallet.getMember();
@@ -58,19 +57,19 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<OrderResponseDto> getOrders(Long memberId) {
-        List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
-        List<Order> orders = orderJpaRepository.findByMemberIdFetchJoin(memberId);
-        orders.
+        List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
+        List<Order> orderList = orderJpaRepository.findByMemberIdFetchJoin(memberId);
+        orderList.
                 forEach(order -> {
-                    orderResponseDtos.add(getOrderResponseDto(order));
+                    orderResponseDtoList.add(getOrderResponseDto(order));
                 });
-        return orderResponseDtos;
+        return orderResponseDtoList;
     }
 
     private static OrderResponseDto getOrderResponseDto(Order order) {
-        List<OrderProduct> orderProducts = order.getOrderProducts();
-        List<OrderProductResponseDto> orderProductResponseDtos = new ArrayList<>();
-        orderProducts
+        List<OrderProduct> orderProductList = order.getOrderProducts();
+        List<OrderProductResponseDto> orderProductResponseDtoList = new ArrayList<>();
+        orderProductList
                 .forEach(orderProduct -> {
                     Product product = orderProduct.getProduct();
                     OrderProductResponseDto orderProductResponseDto = new OrderProductResponseDto(
@@ -81,11 +80,11 @@ public class OrderService {
                             orderProduct.getQuantity(),
                             orderProduct.getStatus()
                     );
-                    orderProductResponseDtos.add(orderProductResponseDto);
+                    orderProductResponseDtoList.add(orderProductResponseDto);
                 });
         return new OrderResponseDto(
                 order.getId(),
-                orderProductResponseDtos,
+                orderProductResponseDtoList,
                 order.getTotalPrice()
         );
     }

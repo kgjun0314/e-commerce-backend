@@ -3,9 +3,7 @@ package com.kgj0314.e_commerce_backend.application.service;
 import com.kgj0314.e_commerce_backend.application.command.WalletChargeCommand;
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
-import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletJpaRepository;
-import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletChargeResponseDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletResponseDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionResponseDto;
@@ -50,13 +48,7 @@ public class WalletService {
     @Transactional
     public List<WalletTransactionResponseDto> getWalletTransactions(Long memberId){
         Wallet wallet = walletJpaRepository.findByMemberIdFetchJoin(memberId);
-        List<WalletTransaction> walletTransactions = wallet.getTransactions();
-        List<WalletTransactionResponseDto> walletTransactionResponseDtos = new ArrayList<>();
-        walletTransactions
-                .forEach(walletTransaction -> {
-                    walletTransactionResponseDtos.add(WalletTransactionService.getWalletTransactionResponseDto(walletTransaction));
-                });
-        return walletTransactionResponseDtos;
+        return walletTransactionService.getWalletTransactionList(wallet);
     }
 
     @Transactional

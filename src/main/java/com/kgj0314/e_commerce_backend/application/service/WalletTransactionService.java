@@ -53,17 +53,17 @@ public class WalletTransactionService {
     }
 
     @Transactional
-    public List<WalletTransactionResponseDto> getWalletTransactions(Long walletId) {
-        List<WalletTransaction> walletTransactions = walletTransactionJpaRepository.findByWalletId(walletId);
-        List<WalletTransactionResponseDto> walletTransactionResponseDtos = new ArrayList<>();
-        walletTransactions
+    public List<WalletTransactionResponseDto> getWalletTransactionList(Wallet wallet) {
+        List<WalletTransaction> walletTransactionList = wallet.getTransactions();
+        List<WalletTransactionResponseDto> walletTransactionResponseDtoList = new ArrayList<>();
+        walletTransactionList
                 .forEach(walletTransaction -> {
-                    walletTransactionResponseDtos.add(getWalletTransactionResponseDto(walletTransaction));
+                    walletTransactionResponseDtoList.add(getWalletTransactionResponseDto(walletTransaction));
                 });
-        return walletTransactionResponseDtos;
+        return walletTransactionResponseDtoList;
     }
 
-    public static WalletTransactionResponseDto getWalletTransactionResponseDto(WalletTransaction walletTransaction) {
+    private static WalletTransactionResponseDto getWalletTransactionResponseDto(WalletTransaction walletTransaction) {
         return new WalletTransactionResponseDto(
                 walletTransaction.getId(),
                 walletTransaction.getOrderId(),

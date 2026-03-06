@@ -35,7 +35,7 @@ public class WalletController {
 
     @GetMapping("/my/transactions")
     public ResponseEntity<List<WalletTransactionResponseDto>> getTransactions(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        List<WalletTransactionResponseDto> WalletTransactionResponseDtos = walletService.getWalletTransactions(customUserDetails.getMember().getId());
-        return ResponseEntity.ok(WalletTransactionResponseDtos);
+        List<WalletTransactionResponseDto> WalletTransactionResponseDtoList = walletService.getWalletTransactions(customUserDetails.getMember().getId());
+        return ResponseEntity.ok(WalletTransactionResponseDtoList);
     }
 }

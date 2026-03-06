@@ -4,7 +4,6 @@ import com.kgj0314.e_commerce_backend.application.command.ProductCommand;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.ProductJpaRepository;
-import com.kgj0314.e_commerce_backend.presentation.dto.ProductRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,8 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductResponseDto> getProducts() {
-        List<Product> products = productJpaRepository.findAllFetchJoin();
-        return products.stream()
+        List<Product> productList = productJpaRepository.findAllFetchJoin();
+        return productList.stream()
                 .map(product -> {
                     return new ProductResponseDto(
                             product.getId(),
