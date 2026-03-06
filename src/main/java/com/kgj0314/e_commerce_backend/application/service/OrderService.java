@@ -1,6 +1,5 @@
-package com.kgj0314.e_commerce_backend.application;
+package com.kgj0314.e_commerce_backend.application.service;
 
-import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;

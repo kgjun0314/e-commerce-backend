@@ -1,6 +1,6 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
-import com.kgj0314.e_commerce_backend.application.MemberService;
+import com.kgj0314.e_commerce_backend.application.service.MemberService;
 import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.infrastructure.security.JwtUtil;
 import com.kgj0314.e_commerce_backend.presentation.dto.MemberLoginRequestDto;

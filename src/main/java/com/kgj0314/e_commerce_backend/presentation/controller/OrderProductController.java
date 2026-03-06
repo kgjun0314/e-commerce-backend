@@ -1,6 +1,6 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
-import com.kgj0314.e_commerce_backend.application.OrderProductService;
+import com.kgj0314.e_commerce_backend.application.service.OrderProductService;
 import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductResponseDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderProductStatusRequestDto;

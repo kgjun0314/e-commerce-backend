@@ -1,7 +1,6 @@
-package com.kgj0314.e_commerce_backend.application;
+package com.kgj0314.e_commerce_backend.application.service;
 
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
-import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughQuantityException;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.StockJpaRepository;
 import lombok.RequiredArgsConstructor;

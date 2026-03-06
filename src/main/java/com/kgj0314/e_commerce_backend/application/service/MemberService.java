@@ -1,10 +1,8 @@
-package com.kgj0314.e_commerce_backend.application;
+package com.kgj0314.e_commerce_backend.application.service;
 
-import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedEmailException;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedUsernameException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
-import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaRepository;
 import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupRequestDto;
@@ -14,8 +12,6 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Service

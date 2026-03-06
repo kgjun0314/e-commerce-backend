@@ -1,4 +1,4 @@
-package com.kgj0314.e_commerce_backend.application;
+package com.kgj0314.e_commerce_backend.application.service;
 
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;

@@ -1,7 +1,6 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
-import com.kgj0314.e_commerce_backend.application.WalletService;
-import com.kgj0314.e_commerce_backend.application.WalletTransactionService;
+import com.kgj0314.e_commerce_backend.application.service.WalletService;
 import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeResponseDto;

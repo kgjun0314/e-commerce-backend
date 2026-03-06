@@ -1,11 +1,10 @@
-package com.kgj0314.e_commerce_backend.application;
+package com.kgj0314.e_commerce_backend.application.service;
 
 import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.CannotChangeStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.exception.MemberIdMismatchException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
-import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
 import com.kgj0314.e_commerce_backend.domain.order_product.OrderProductStatus;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

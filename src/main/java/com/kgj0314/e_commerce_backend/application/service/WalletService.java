@@ -1,7 +1,6 @@
-package com.kgj0314.e_commerce_backend.application;
+package com.kgj0314.e_commerce_backend.application.service;
 
 import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
-import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughBalanceException;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletJpaRepository;

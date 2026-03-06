@@ -1,6 +1,6 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
-import com.kgj0314.e_commerce_backend.application.ProductService;
+import com.kgj0314.e_commerce_backend.application.service.ProductService;
 import com.kgj0314.e_commerce_backend.presentation.dto.ProductRequestDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
