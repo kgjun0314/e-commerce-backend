@@ -10,7 +10,7 @@ import lombok.Setter;
 @Table(name = "stocks")
 @Getter @Setter
 public class Stock {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "stock_id")
     private Long id;
 

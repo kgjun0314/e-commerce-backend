@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "products")
 @Getter @Setter
 public class Product extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "product_id")
     private Long id;
 

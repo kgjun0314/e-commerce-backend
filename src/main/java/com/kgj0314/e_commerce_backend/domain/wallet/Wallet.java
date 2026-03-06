@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "wallets")
 @Getter @Setter
 public class Wallet extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "wallet_id")
     private Long id;
 
