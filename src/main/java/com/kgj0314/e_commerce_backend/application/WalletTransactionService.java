@@ -53,7 +53,7 @@ public class WalletTransactionService {
     }
 
     @Transactional
-    public List<WalletTransactionResponseDto> findByWalletId(Long walletId) {
+    public List<WalletTransactionResponseDto> getWalletTransactions(Long walletId) {
         List<WalletTransaction> walletTransactions = walletTransactionJpaRepository.findByWalletId(walletId);
         List<WalletTransactionResponseDto> walletTransactionResponseDtos = new ArrayList<>();
         walletTransactions

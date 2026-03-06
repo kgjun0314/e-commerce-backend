@@ -23,7 +23,7 @@ public class MemberService {
     private final MemberJpaRepository memberJpaRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public MemberSignupResponseDto create(MemberSignupRequestDto memberSignupRequestDto) {
+    public MemberSignupResponseDto createMember(MemberSignupRequestDto memberSignupRequestDto) {
         Member member = new Member();
         member.setEmail(memberSignupRequestDto.getEmail());
         member.setUsername(memberSignupRequestDto.getUsername());
@@ -48,9 +48,5 @@ public class MemberService {
                 member.getEmail(),
                 member.getEmail()
         );
-    }
-
-    public Member findById(Long id) {
-        return memberJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
     }
 }

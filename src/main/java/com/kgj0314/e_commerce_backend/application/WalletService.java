@@ -23,7 +23,7 @@ public class WalletService {
     private final WalletTransactionService walletTransactionService;
 
     @Transactional
-    public void decrease(Wallet wallet, Long price, Long orderId){
+    public void decreaseBalance(Wallet wallet, Long price, Long orderId){
         if(wallet.getBalance() < price) {
             throw new NotEnoughBalanceException("잔액이 부족합니다. (지갑 ID: " + wallet.getId() + ")");
         }
@@ -33,18 +33,18 @@ public class WalletService {
     }
 
     @Transactional
-    public void increase(Wallet wallet, Long price, Long orderProductId){
+    public void increaseBalance(Wallet wallet, Long price, Long orderProductId){
         wallet.increase(price);
         walletTransactionService.createRefundTransaction(wallet, orderProductId, price);
     }
 
     @Transactional
-    public Wallet findByMemberIdWithLock(Long memberId){
+    public Wallet getWalletWithLock(Long memberId){
         return walletJpaRepository.findByMemberIdWithLock(memberId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 지갑 입니다."));
     }
 
     @Transactional(readOnly = true)
-    public WalletResponseDto findByMemberId(Long memberId){
+    public WalletResponseDto getWallet(Long memberId){
         Wallet wallet = walletJpaRepository.findByMemberId(memberId);
         return new WalletResponseDto(
                 wallet.getBalance()
@@ -52,7 +52,7 @@ public class WalletService {
     }
 
     @Transactional
-    public List<WalletTransactionResponseDto> getWalletTransactionsByMemberId(Long memberId){
+    public List<WalletTransactionResponseDto> getWalletTransactions(Long memberId){
         Wallet wallet = walletJpaRepository.findByMemberIdFetchJoin(memberId);
         List<WalletTransaction> walletTransactions = wallet.getTransactions();
         List<WalletTransactionResponseDto> walletTransactionResponseDtos = new ArrayList<>();
@@ -64,8 +64,8 @@ public class WalletService {
     }
 
     @Transactional
-    public WalletChargeResponseDto charge(Long memberId, WalletChargeRequestDto walletChargeRequestDto){
-        Wallet wallet = findByMemberIdWithLock(memberId);
+    public WalletChargeResponseDto chargeWallet(Long memberId, WalletChargeRequestDto walletChargeRequestDto){
+        Wallet wallet = getWalletWithLock(memberId);
         Long amount = walletChargeRequestDto.getAmount();
         wallet.increase(amount);
         walletTransactionService.createChargeTransaction(wallet, amount);

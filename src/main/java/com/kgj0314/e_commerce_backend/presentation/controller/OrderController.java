@@ -19,19 +19,19 @@ public class OrderController {
 
     @PostMapping("/create")
     public ResponseEntity<OrderResponseDto> createOrder(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<OrderRequestDto> orderRequestDtos) {
-        OrderResponseDto orderResponseDto = orderService.create(customUserDetails.getMember().getId(), orderRequestDtos);
+        OrderResponseDto orderResponseDto = orderService.createOrder(customUserDetails.getMember().getId(), orderRequestDtos);
         return ResponseEntity.ok(orderResponseDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDto> getOrder(@PathVariable Long id) {
-        OrderResponseDto orderResponseDto = orderService.findById(id);
+        OrderResponseDto orderResponseDto = orderService.getOrder(id);
         return ResponseEntity.ok(orderResponseDto);
     }
 
     @GetMapping("/my")
     public ResponseEntity<List<OrderResponseDto>> getOrders(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        List<OrderResponseDto> orderResponseDtos = orderService.findByMemberId(customUserDetails.getMember().getId());
+        List<OrderResponseDto> orderResponseDtos = orderService.getOrders(customUserDetails.getMember().getId());
         return ResponseEntity.ok(orderResponseDtos);
     }
 }

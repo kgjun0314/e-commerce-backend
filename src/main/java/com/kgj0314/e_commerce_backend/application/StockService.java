@@ -14,7 +14,7 @@ public class StockService {
     private final StockJpaRepository stockJpaRepository;
 
     @Transactional
-    public void decrease(Stock stock, Long quantity) {
+    public void decreaseStock(Stock stock, Long quantity) {
         if (stock.getQuantity() < quantity) {
             throw new NotEnoughQuantityException("재고가 부족합니다. (상품 ID: " + stock.getProduct().getId() + ")");
         }
@@ -23,12 +23,12 @@ public class StockService {
     }
 
     @Transactional
-    public void increase(Stock stock, Long quantity) {
+    public void increaseStock(Stock stock, Long quantity) {
         stock.increase(quantity);
     }
 
     @Transactional
-    public Stock findByProductIdWithLock(Long productId) {
+    public Stock getStockWithLock(Long productId) {
         return stockJpaRepository.findByProductIdWithLock(productId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 재고 정보입니다."));
     }
 }

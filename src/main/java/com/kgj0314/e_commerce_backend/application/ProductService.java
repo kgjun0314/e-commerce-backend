@@ -18,7 +18,7 @@ public class ProductService {
     private final ProductJpaRepository productJpaRepository;
 
     @Transactional(readOnly = true)
-    public List<ProductResponseDto> findAll() {
+    public List<ProductResponseDto> getProducts() {
         List<Product> products = productJpaRepository.findAllWithStock();
         return products.stream()
                 .map(product -> {
@@ -33,7 +33,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ProductResponseDto findById(Long id) {
+    public ProductResponseDto getProduct(Long id) {
         Product product = productJpaRepository.findByIdWithStock(id);
         return new ProductResponseDto(
                             product.getId(),
@@ -44,7 +44,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponseDto create(ProductRequestDto productRequestDto) {
+    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         Product product = new Product();
         product.setName(productRequestDto.getName());
         product.setPrice(productRequestDto.getPrice());

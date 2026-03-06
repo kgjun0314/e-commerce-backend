@@ -22,19 +22,19 @@ public class WalletController {
 
     @PostMapping("/charge")
     public ResponseEntity<WalletChargeResponseDto> chargeWallet(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody WalletChargeRequestDto walletChargeRequestDto) {
-        WalletChargeResponseDto walletChargeResponseDto = walletService.charge(customUserDetails.getMember().getId(), walletChargeRequestDto);
+        WalletChargeResponseDto walletChargeResponseDto = walletService.chargeWallet(customUserDetails.getMember().getId(), walletChargeRequestDto);
         return ResponseEntity.ok(walletChargeResponseDto);
     }
 
     @GetMapping("/my/balance")
     public ResponseEntity<WalletResponseDto> getBalance(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        WalletResponseDto walletResponseDto = walletService.findByMemberId(customUserDetails.getMember().getId());
+        WalletResponseDto walletResponseDto = walletService.getWallet(customUserDetails.getMember().getId());
         return ResponseEntity.ok(walletResponseDto);
     }
 
     @GetMapping("/my/transactions")
     public ResponseEntity<List<WalletTransactionResponseDto>> getTransactions(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        List<WalletTransactionResponseDto> WalletTransactionResponseDtos = walletService.getWalletTransactionsByMemberId(customUserDetails.getMember().getId());
+        List<WalletTransactionResponseDto> WalletTransactionResponseDtos = walletService.getWalletTransactions(customUserDetails.getMember().getId());
         return ResponseEntity.ok(WalletTransactionResponseDtos);
     }
 }

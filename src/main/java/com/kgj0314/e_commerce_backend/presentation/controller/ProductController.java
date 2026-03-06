@@ -18,18 +18,18 @@ public class ProductController {
 
     @GetMapping("/list")
     public List<ProductResponseDto> getProducts() {
-        return productService.findAll();
+        return productService.getProducts();
     }
 
     @GetMapping("/{id}")
     public ProductResponseDto getProduct(@PathVariable Long id) {
-        return productService.findById(id);
+        return productService.getProduct(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto productRequestDto) {
-        ProductResponseDto productResponseDto = productService.create(productRequestDto);
+        ProductResponseDto productResponseDto = productService.createProduct(productRequestDto);
         return ResponseEntity.ok(productResponseDto);
     }
 }

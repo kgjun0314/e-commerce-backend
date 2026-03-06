@@ -30,7 +30,7 @@ public class OrderProductService {
     private final WalletService walletService;
 
     @Transactional(readOnly = true)
-    public OrderProductResponseDto findById(Long id) {
+    public OrderProductResponseDto getOrderProduct(Long id) {
 //        OrderProduct orderProduct = orderProductJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문 정보입니다."));
         OrderProduct orderProduct = orderProductJpaRepository.findByIdFetchJoin(id);
         Product product = orderProduct.getProduct();
@@ -58,7 +58,7 @@ public class OrderProductService {
     }
 
     @Transactional
-    public OrderProductResponseDto cancel(Member member, Long id) {
+    public OrderProductResponseDto cancelOrderProduct(Member member, Long id) {
         OrderProduct orderProduct = orderProductJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문 정보입니다."));
         if(!member.getId().equals(orderProduct.getOrder().getMember().getId())) {
             throw new MemberIdMismatchException("리소스의 소유자와 로그인 사용자가 서로 다릅니다.");
@@ -75,7 +75,7 @@ public class OrderProductService {
     }
 
     @Transactional
-    public List<OrderProductResponseDto> findByStatus(OrderProductStatusRequestDto orderProductStatusRequestDto) {
+    public List<OrderProductResponseDto> getOrderProducts(OrderProductStatusRequestDto orderProductStatusRequestDto) {
         OrderProductStatus status = orderProductStatusRequestDto.getStatus();
         List<OrderProduct> orderProducts = orderProductJpaRepository.findByStatusFetchJoin(status);
         List<OrderProductResponseDto> orderProductResponseDtos = new ArrayList<>();

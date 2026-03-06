@@ -27,7 +27,7 @@ public class OrderService {
     private final WalletService walletService;
 
     @Transactional
-    public OrderResponseDto create(Long memberId, List<OrderRequestDto> orderRequestDtos) {
+    public OrderResponseDto createOrder(Long memberId, List<OrderRequestDto> orderRequestDtos) {
         orderRequestDtos.sort(
                 Comparator.comparing(OrderRequestDto::getProductId)
         );
@@ -50,14 +50,14 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderResponseDto findById(Long id) {
+    public OrderResponseDto getOrder(Long id) {
 //        Order order = orderJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문입니다."));
         Order order = orderJpaRepository.findByIdFetchJoin(id);
         return getOrderResponseDto(order);
     }
 
     @Transactional(readOnly = true)
-    public List<OrderResponseDto> findByMemberId(Long memberId) {
+    public List<OrderResponseDto> getOrders(Long memberId) {
         List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
         List<Order> orders = orderJpaRepository.findAllByMemberIdFetchJoin(memberId);
         orders.
