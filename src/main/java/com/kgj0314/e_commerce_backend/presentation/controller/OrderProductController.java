@@ -19,7 +19,7 @@ public class OrderProductController {
     private final OrderProductService orderProductService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderProductResponseDto> getById(@PathVariable Long id) {
+    public ResponseEntity<OrderProductResponseDto> getOrderProduct(@PathVariable Long id) {
         OrderProductResponseDto orderProductResponseDto = orderProductService.findById(id);
         return ResponseEntity.ok(orderProductResponseDto);
     }
@@ -32,13 +32,13 @@ public class OrderProductController {
     }
 
     @PatchMapping("/cancel/{id}")
-    public ResponseEntity<OrderProductResponseDto> cancel(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long id) {
+    public ResponseEntity<OrderProductResponseDto> cancelOrderProduct(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long id) {
         OrderProductResponseDto orderProductResponseDto = orderProductService.cancel(customUserDetails.getMember(), id);
         return ResponseEntity.ok(orderProductResponseDto);
     }
 
     @GetMapping("/status")
-    public ResponseEntity<List<OrderProductResponseDto>> getByStatus(@ModelAttribute OrderProductStatusRequestDto OrderProductStatusRequestDto) {
+    public ResponseEntity<List<OrderProductResponseDto>> getOrderProducts(@ModelAttribute OrderProductStatusRequestDto OrderProductStatusRequestDto) {
         List<OrderProductResponseDto> orderProductResponseDtos = orderProductService.findByStatus(OrderProductStatusRequestDto);
         return ResponseEntity.ok(orderProductResponseDtos);
     }

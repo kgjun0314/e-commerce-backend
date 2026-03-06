@@ -21,7 +21,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @PostMapping("/charge")
-    public ResponseEntity<WalletChargeResponseDto> charge(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody WalletChargeRequestDto walletChargeRequestDto) {
+    public ResponseEntity<WalletChargeResponseDto> chargeWallet(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody WalletChargeRequestDto walletChargeRequestDto) {
         WalletChargeResponseDto walletChargeResponseDto = walletService.charge(customUserDetails.getMember().getId(), walletChargeRequestDto);
         return ResponseEntity.ok(walletChargeResponseDto);
     }
