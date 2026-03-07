@@ -41,10 +41,10 @@ public class WalletTransactionService {
     }
 
     @Transactional
-    public void createRefundTransaction(Wallet wallet, Long orderProductId, Long amount) {
+    public void createRefundTransaction(Wallet wallet, Long orderedProductId, Long amount) {
         WalletTransaction walletTransaction = new WalletTransaction();
         wallet.addWalletTransaction(walletTransaction);
-        walletTransaction.setOrderProductId(orderProductId);
+        walletTransaction.setOrderedProductId(orderedProductId);
         walletTransaction.setType(WalletTransactionType.REFUND);
         walletTransaction.setAmount(amount);
         walletTransaction.setBalanceAfter(wallet.getBalance());
@@ -58,20 +58,8 @@ public class WalletTransactionService {
         List<WalletTransactionResponseDto> walletTransactionResponseDtoList = new ArrayList<>();
         walletTransactionList
                 .forEach(walletTransaction -> {
-                    walletTransactionResponseDtoList.add(getWalletTransactionResponseDto(walletTransaction));
+                    walletTransactionResponseDtoList.add(new WalletTransactionResponseDto(walletTransaction));
                 });
         return walletTransactionResponseDtoList;
-    }
-
-    private static WalletTransactionResponseDto getWalletTransactionResponseDto(WalletTransaction walletTransaction) {
-        return new WalletTransactionResponseDto(
-                walletTransaction.getId(),
-                walletTransaction.getOrderId(),
-                walletTransaction.getOrderProductId(),
-                walletTransaction.getType(),
-                walletTransaction.getAmount(),
-                walletTransaction.getBalanceAfter(),
-                walletTransaction.getCreatedDate()
-        );
     }
 }

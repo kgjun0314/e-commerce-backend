@@ -1,11 +1,11 @@
-package com.kgj0314.e_commerce_backend.domain.order_product;
+package com.kgj0314.e_commerce_backend.domain.ordered_product;
 
 import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusException;
 import lombok.Getter;
 
 
 @Getter
-public enum OrderProductStatus {
+public enum OrderedProductStatus {
     CREATED {
         @Override
         public void checkCancellable() {}

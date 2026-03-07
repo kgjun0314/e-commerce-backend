@@ -10,16 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequestMapping("/api/order")
+@RequestMapping("/api/orders")
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<OrderResponseDto> createOrder(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<OrderRequestDto> orderRequestDtoList) {
         List<OrderCommand> orderCommands = new ArrayList<>();
         orderRequestDtoList
@@ -28,7 +29,7 @@ public class OrderController {
                     orderCommands.add(orderCommand);
                 });
         OrderResponseDto orderResponseDto = orderService.createOrder(customUserDetails.getMember().getId(), orderCommands);
-        return ResponseEntity.ok(orderResponseDto);
+        return ResponseEntity.created(URI.create("/api/orders/" + orderResponseDto.getId())).body(orderResponseDto);
     }
 
     @GetMapping("/{id}")

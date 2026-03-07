@@ -14,7 +14,7 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
 
     @Query("""
         SELECT DISTINCT o FROM Order o
-        JOIN FETCH o.orderProducts op
+        JOIN FETCH o.orderedProducts op
         JOIN FETCH op.product p
         JOIN FETCH p.stock
         WHERE o.member.id = :memberId
@@ -23,7 +23,7 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
 
     @Query("""
         SELECT DISTINCT o FROM Order o
-        JOIN FETCH o.orderProducts op
+        JOIN FETCH o.orderedProducts op
         JOIN FETCH op.product p
         JOIN FETCH p.stock
         WHERE o.id = :id

@@ -33,6 +33,6 @@ public class MemberController {
     @GetMapping("/{id}")
     public ResponseEntity<MemberResponseDto> getMember(@PathVariable Long id) {
         MemberResponseDto memberResponseDto = memberService.getMember(id);
-        return ResponseEntity.ok().body(memberResponseDto);
+        return ResponseEntity.ok(memberResponseDto);
     }
 }

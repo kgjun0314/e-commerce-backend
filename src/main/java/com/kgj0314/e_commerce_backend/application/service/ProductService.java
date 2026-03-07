@@ -20,26 +20,14 @@ public class ProductService {
     public List<ProductResponseDto> getProducts() {
         List<Product> productList = productJpaRepository.findAllFetchJoin();
         return productList.stream()
-                .map(product -> {
-                    return new ProductResponseDto(
-                            product.getId(),
-                            product.getName(),
-                            product.getPrice(),
-                            product.getStock().getQuantity()
-                    );
-                })
+                .map(ProductResponseDto::new)
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public ProductResponseDto getProduct(Long id) {
         Product product = productJpaRepository.findByIdFetchJoin(id);
-        return new ProductResponseDto(
-                            product.getId(),
-                            product.getName(),
-                            product.getPrice(),
-                            product.getStock().getQuantity()
-        );
+        return new ProductResponseDto(product);
     }
 
     @Transactional
@@ -53,11 +41,6 @@ public class ProductService {
         product.setStock(stock);
         productJpaRepository.save(product);
 
-        return new ProductResponseDto(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getStock().getQuantity()
-        );
+        return new ProductResponseDto(product);
     }
 }

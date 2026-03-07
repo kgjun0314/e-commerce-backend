@@ -16,7 +16,7 @@ public class WalletTransaction extends BaseEntity {
 
     private Long orderId;
 
-    private Long orderProductId;
+    private Long orderedProductId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

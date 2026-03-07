@@ -1,4 +1,4 @@
-package com.kgj0314.e_commerce_backend.domain.order_product;
+package com.kgj0314.e_commerce_backend.domain.ordered_product;
 
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "order_products")
 @Getter @Setter
 @NoArgsConstructor
-public class OrderProduct {
+public class OrderedProduct {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "order_product_id")
     private Long id;
@@ -35,13 +35,13 @@ public class OrderProduct {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private OrderProductStatus status;
+    private OrderedProductStatus status;
 
-    public OrderProduct(Product product, Long orderPrice, Long quantity) {
+    public OrderedProduct(Product product, Long orderPrice, Long quantity) {
         this.product = product;
         this.orderPrice = orderPrice;
         this.quantity = quantity;
-        this.status = OrderProductStatus.CREATED;
+        this.status = OrderedProductStatus.CREATED;
     }
 
     public Long getTotalPrice() {

@@ -27,9 +27,9 @@ public class WalletService {
     }
 
     @Transactional
-    public void increaseBalance(Wallet wallet, Long price, Long orderProductId){
+    public void increaseBalance(Wallet wallet, Long price, Long orderedProductId){
         wallet.increaseBalance(price);
-        walletTransactionService.createRefundTransaction(wallet, orderProductId, price);
+        walletTransactionService.createRefundTransaction(wallet, orderedProductId, price);
     }
 
     @Transactional
@@ -40,9 +40,7 @@ public class WalletService {
     @Transactional(readOnly = true)
     public WalletResponseDto getWallet(Long memberId){
         Wallet wallet = walletJpaRepository.findByMemberId(memberId);
-        return new WalletResponseDto(
-                wallet.getBalance()
-        );
+        return new WalletResponseDto(wallet);
     }
 
     @Transactional
@@ -57,9 +55,6 @@ public class WalletService {
         Long amount = walletChargeCommand.getAmount();
         wallet.increaseBalance(amount);
         walletTransactionService.createChargeTransaction(wallet, amount);
-        return new WalletChargeResponseDto(
-                wallet.getId(),
-                wallet.getBalance()
-        );
+        return new WalletChargeResponseDto(wallet);
     }
 }

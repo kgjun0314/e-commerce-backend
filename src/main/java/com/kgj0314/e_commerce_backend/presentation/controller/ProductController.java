@@ -9,22 +9,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping("/list")
-    public List<ProductResponseDto> getProducts() {
-        return productService.getProducts();
+    @GetMapping()
+    public ResponseEntity<List<ProductResponseDto>> getProducts() {
+        List<ProductResponseDto> productResponseDtoList = productService.getProducts();
+        return ResponseEntity.ok(productResponseDtoList);
     }
 
     @GetMapping("/{id}")
-    public ProductResponseDto getProduct(@PathVariable Long id) {
-        return productService.getProduct(id);
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id) {
+        ProductResponseDto productResponseDto = productService.getProduct(id);
+        return ResponseEntity.ok(productResponseDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -36,6 +39,6 @@ public class ProductController {
                 productRequestDto.getPrice(),
                 productRequestDto.getQuantity());
         ProductResponseDto productResponseDto = productService.createProduct(productCommand);
-        return ResponseEntity.ok(productResponseDto);
+        return ResponseEntity.created(URI.create("/api/products/" + productResponseDto.getId())).body(productResponseDto);
     }
 }

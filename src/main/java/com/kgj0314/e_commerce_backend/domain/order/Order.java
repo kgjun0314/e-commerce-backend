@@ -2,8 +2,8 @@ package com.kgj0314.e_commerce_backend.domain.order;
 
 import com.kgj0314.e_commerce_backend.domain.BaseEntity;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
-import com.kgj0314.e_commerce_backend.domain.order_product.OrderProduct;
-import com.kgj0314.e_commerce_backend.domain.order_product.OrderProductStatus;
+import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;
+import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProductStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -23,7 +23,7 @@ public class Order extends BaseEntity {
     private Long id;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderProduct> orderProducts = new ArrayList<>();
+    private List<OrderedProduct> orderedProducts = new ArrayList<>();
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,17 +34,17 @@ public class Order extends BaseEntity {
     @CreatedDate
     private LocalDateTime createdDate;
 
-    public void addOrderProduct(OrderProduct orderProduct) {
-        orderProduct.setOrder(this);
-        orderProducts.add(orderProduct);
+    public void addOrderedProduct(OrderedProduct orderedProduct) {
+        orderedProduct.setOrder(this);
+        orderedProducts.add(orderedProduct);
     }
 
     public Long getTotalPrice() {
         Long totalPrice = 0L;
 
-        for (OrderProduct orderProduct : orderProducts) {
-            if (orderProduct.getStatus() != OrderProductStatus.CANCELED) {
-                totalPrice += orderProduct.getTotalPrice();
+        for (OrderedProduct orderedProduct : orderedProducts) {
+            if (orderedProduct.getStatus() != OrderedProductStatus.CANCELED) {
+                totalPrice += orderedProduct.getTotalPrice();
             }
         }
 
