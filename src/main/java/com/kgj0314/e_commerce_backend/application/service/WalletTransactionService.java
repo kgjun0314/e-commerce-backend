@@ -55,17 +55,6 @@ public class WalletTransactionService {
         walletTransactionJpaRepository.save(walletTransaction);
     }
 
-    @Transactional
-    public List<WalletTransactionResponseDto> getWalletTransactionList(Wallet wallet) {
-        List<WalletTransaction> walletTransactionList = wallet.getTransactions();
-        List<WalletTransactionResponseDto> walletTransactionResponseDtoList = new ArrayList<>();
-        walletTransactionList
-                .forEach(walletTransaction -> {
-                    walletTransactionResponseDtoList.add(new WalletTransactionResponseDto(walletTransaction));
-                });
-        return walletTransactionResponseDtoList;
-    }
-
     @Transactional(readOnly = true)
     public WalletTransactionPageDto getWalletTransactions(Long memberId, Pageable pageable) {
         Page<Long> walletTransactionIdPage = walletTransactionJpaRepository.findWalletTransactionIdByWalletId(memberId, pageable);

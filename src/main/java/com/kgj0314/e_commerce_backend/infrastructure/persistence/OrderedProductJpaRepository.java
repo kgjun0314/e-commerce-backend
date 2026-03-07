@@ -14,19 +14,19 @@ public interface OrderedProductJpaRepository extends JpaRepository<OrderedProduc
     List<OrderedProduct> findByStatus(OrderedProductStatus status);
 
     @Query("""
-        select distinct o from OrderedProduct o
-        join fetch o.product p
-        join fetch p.stock s
-        where o.status = :status
-        order by o.createdDate desc
+        SELECT DISTINCT o FROM OrderedProduct o
+        JOIN FETCH o.product p
+        JOIN FETCH p.stock s
+        WHERE o.status = :status
+        ORDER BY o.createdDate DESC
     """)
     Page<OrderedProduct> findByStatusFetchJoin(@Param("status") OrderedProductStatus status, Pageable pageable);
 
     @Query("""
-        select distinct o from OrderedProduct o
-        join fetch o.product p
-        join fetch p.stock s
-        where o.id = :id
+        SELECT DISTINCT o FROM OrderedProduct o
+        JOIN FETCH o.product p
+        JOIN FETCH p.stock s
+        WHERE o.id = :id
     """)
     OrderedProduct findByIdFetchJoin(@Param("id") Long id);
 }

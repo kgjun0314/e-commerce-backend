@@ -38,9 +38,9 @@ public class OrderedProduct extends BaseEntity {
     @NotNull
     private OrderedProductStatus status;
 
-    public OrderedProduct(Product product, Long orderPrice, Long quantity) {
+    public OrderedProduct(Product product, Long quantity) {
         this.product = product;
-        this.orderPrice = orderPrice;
+        this.orderPrice = product.getPrice();
         this.quantity = quantity;
         this.status = OrderedProductStatus.CREATED;
     }

@@ -27,13 +27,11 @@ public class OrderController {
 
     @PostMapping()
     public ResponseEntity<OrderResponseDto> createOrder(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<OrderRequestDto> orderRequestDtoList) {
-        List<OrderCommand> orderCommands = new ArrayList<>();
-        orderRequestDtoList
-                .forEach(orderRequestDto -> {
-                    OrderCommand orderCommand = new OrderCommand(orderRequestDto.getProductId(), orderRequestDto.getQuantity());
-                    orderCommands.add(orderCommand);
-                });
-        OrderResponseDto orderResponseDto = orderService.createOrder(customUserDetails.getMember().getId(), orderCommands);
+        List<OrderCommand> orderCommandList = orderRequestDtoList
+                .stream()
+                .map(orderRequestDto -> new OrderCommand(orderRequestDto.getProductId(), orderRequestDto.getQuantity()))
+                .toList();
+        OrderResponseDto orderResponseDto = orderService.createOrder(customUserDetails.getMember().getId(), orderCommandList);
         return ResponseEntity.created(URI.create("/api/orders/" + orderResponseDto.getId())).body(orderResponseDto);
     }
 

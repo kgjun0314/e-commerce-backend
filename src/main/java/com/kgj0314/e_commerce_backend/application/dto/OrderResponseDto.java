@@ -20,14 +20,9 @@ public class OrderResponseDto {
 
     public OrderResponseDto(Order order) {
         this.id = order.getId();
-        List<OrderedProduct> orderedProductList = order.getOrderedProducts();
-        List<OrderedProductResponseDto> orderedProductResponseDtoList = new ArrayList<>();
-        orderedProductList
-                .forEach(orderedProduct -> {
-                    Product product = orderedProduct.getProduct();
-                    orderedProductResponseDtoList.add(new OrderedProductResponseDto(orderedProduct, product));
-                });
-        this.orderedProducts = orderedProductResponseDtoList;
+        this.orderedProducts = order.getOrderedProducts().stream().map(orderedProduct ->
+                new OrderedProductResponseDto(orderedProduct, orderedProduct.getProduct())
+        ).toList();
         this.totalPrice = order.getTotalPrice();
         this.createdDate = order.getCreatedDate();
     }

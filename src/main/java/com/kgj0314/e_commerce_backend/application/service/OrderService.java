@@ -12,12 +12,10 @@ import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderJpaReposit
 import com.kgj0314.e_commerce_backend.application.dto.OrderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -38,10 +36,13 @@ public class OrderService {
         orderCommandList
                 .forEach(orderCommand -> {
                     Long productId = orderCommand.getProductId();
+
                     Stock stock = stockService.getStockWithLock(productId);
                     stockService.decreaseStock(stock, orderCommand.getQuantity());
+
                     Product product = stock.getProduct();
-                    OrderedProduct orderedProduct = new OrderedProduct(product, product.getPrice(), orderCommand.getQuantity());
+                    OrderedProduct orderedProduct = new OrderedProduct(product, orderCommand.getQuantity());
+
                     order.addOrderedProduct(orderedProduct);
                 });
         Member member = wallet.getMember();
