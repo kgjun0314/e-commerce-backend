@@ -43,7 +43,7 @@ public class OrderController {
         return ResponseEntity.ok(orderResponseDto);
     }
 
-    @GetMapping("/my")
+    @GetMapping()
     public ResponseEntity<OrderPageDto> getOrdersPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         OrderPageDto orderPageDto = orderService.getOrders(customUserDetails.getMember().getId(), pageable);
         return ResponseEntity.ok(orderPageDto);

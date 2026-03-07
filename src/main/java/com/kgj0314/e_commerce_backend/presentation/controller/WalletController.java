@@ -31,7 +31,7 @@ public class WalletController {
         return ResponseEntity.ok(walletChargeResponseDto);
     }
 
-    @GetMapping("/my/balance")
+    @GetMapping("/balance")
     public ResponseEntity<WalletResponseDto> getBalance(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         WalletResponseDto walletResponseDto = walletService.getWallet(customUserDetails.getMember().getId());
         return ResponseEntity.ok(walletResponseDto);

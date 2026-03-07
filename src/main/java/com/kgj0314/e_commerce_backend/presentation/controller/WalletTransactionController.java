@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WalletTransactionController {
     private final WalletTransactionService walletTransactionService;
 
-    @GetMapping("/my")
+    @GetMapping()
     public ResponseEntity<WalletTransactionPageDto> getTransactionsPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         WalletTransactionPageDto walletTransactionPageDto = walletTransactionService.getWalletTransactions(customUserDetails.getMember().getId(), pageable);
         return ResponseEntity.ok(walletTransactionPageDto);
