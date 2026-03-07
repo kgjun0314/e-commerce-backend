@@ -65,8 +65,7 @@ public class OrderService {
 
                     order.addOrderedProduct(orderedProduct);
                 });
-        Member member = wallet.getMember();
-        member.addOrder(order);
+        order.setMember(wallet.getMember());
         Order savedOrder = orderJpaRepository.save(order);
         walletService.decreaseBalance(wallet, savedOrder.getTotalPrice(), savedOrder.getId());
         return new OrderResponseDto(order);

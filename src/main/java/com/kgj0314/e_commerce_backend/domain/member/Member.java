@@ -30,9 +30,6 @@ public class Member extends BaseEntity {
     @NotNull
     private String password;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Order> orders = new ArrayList<>();
-
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Wallet wallet;
 
@@ -41,10 +38,5 @@ public class Member extends BaseEntity {
 
     public Member() {
         this.role = Role.ROLE_USER;
-    }
-
-    public void addOrder(Order order) {
-        orders.add(order);
-        order.setMember(this);
     }
 }
