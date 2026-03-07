@@ -10,6 +10,9 @@ import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderJpaRepository;
 import com.kgj0314.e_commerce_backend.application.dto.OrderResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,14 +56,27 @@ public class OrderService {
         return new OrderResponseDto(order);
     }
 
+//    @Transactional(readOnly = true)
+//    public List<OrderResponseDto> getOrders(Long memberId) {
+//        List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
+//        List<Order> orderList = orderJpaRepository.findByMemberIdFetchJoin(memberId);
+//        orderList.
+//                forEach(order -> {
+//                    orderResponseDtoList.add(new OrderResponseDto(order));
+//                });
+//        return orderResponseDtoList;
+//    }
+
     @Transactional(readOnly = true)
-    public List<OrderResponseDto> getOrders(Long memberId) {
-        List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
-        List<Order> orderList = orderJpaRepository.findByMemberIdFetchJoin(memberId);
-        orderList.
-                forEach(order -> {
-                    orderResponseDtoList.add(new OrderResponseDto(order));
-                });
-        return orderResponseDtoList;
+    public Page<OrderResponseDto> getOrders(Long memberId, Pageable pageable) {
+        Page<Long> orderIdPage = orderJpaRepository.findOrderIdByMemberId(memberId, pageable);
+
+        if(orderIdPage.isEmpty()) {
+            return Page.empty();
+        }
+        List<Order> orders = orderJpaRepository.findByIdListFetchJoin(orderIdPage.getContent());
+
+        List<OrderResponseDto> orderResponseDtoList = orders.stream().map(OrderResponseDto::new).toList();
+        return new PageImpl<>(orderResponseDtoList, pageable, orderIdPage.getTotalElements());
     }
 }

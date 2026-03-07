@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "order_products")
+@Table(name = "ordered_products")
 @Getter @Setter
 @NoArgsConstructor
 public class OrderedProduct {

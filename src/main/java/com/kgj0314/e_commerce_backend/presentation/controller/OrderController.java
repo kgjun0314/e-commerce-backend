@@ -6,6 +6,10 @@ import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.OrderResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +42,15 @@ public class OrderController {
         return ResponseEntity.ok(orderResponseDto);
     }
 
+//    @GetMapping("/my")
+//    public ResponseEntity<List<OrderResponseDto>> getOrders(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+//        List<OrderResponseDto> orderResponseDtoList = orderService.getOrders(customUserDetails.getMember().getId());
+//        return ResponseEntity.ok(orderResponseDtoList);
+//    }
+
     @GetMapping("/my")
-    public ResponseEntity<List<OrderResponseDto>> getOrders(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        List<OrderResponseDto> orderResponseDtoList = orderService.getOrders(customUserDetails.getMember().getId());
+    public ResponseEntity<Page<OrderResponseDto>> getOrdersPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<OrderResponseDto> orderResponseDtoList = orderService.getOrders(customUserDetails.getMember().getId(), pageable);
         return ResponseEntity.ok(orderResponseDtoList);
     }
 }
