@@ -1,6 +1,7 @@
 package com.kgj0314.e_commerce_backend.application.service;
 
 import com.kgj0314.e_commerce_backend.application.command.OrderedProductStatusCommand;
+import com.kgj0314.e_commerce_backend.application.dto.OrderedProductPageDto;
 import com.kgj0314.e_commerce_backend.application.dto.OrderedProductResponseDto;
 import com.kgj0314.e_commerce_backend.application.query.OrderedProductStatusQuery;
 import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusException;
@@ -15,6 +16,8 @@ import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.OrderedProductJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,14 +76,19 @@ public class OrderedProductService {
     }
 
     @Transactional
-    public List<OrderedProductResponseDto> getOrderedProducts(OrderedProductStatusQuery orderedProductStatusQuery) {
+    public OrderedProductPageDto getOrderedProducts(OrderedProductStatusQuery orderedProductStatusQuery, Pageable pageable) {
         OrderedProductStatus status = orderedProductStatusQuery.getStatus();
-        List<OrderedProduct> orderedProductList = orderedProductJpaRepository.findByStatusFetchJoin(status);
-        List<OrderedProductResponseDto> orderedProductResponseDtos = new ArrayList<>();
-        orderedProductList
-                .forEach(orderedProduct -> {
-                    orderedProductResponseDtos.add(new OrderedProductResponseDto(orderedProduct, orderedProduct.getProduct()));
-                });
-        return orderedProductResponseDtos;
+        Page<OrderedProduct> orderedProductPage = orderedProductJpaRepository.findByStatusFetchJoin(status, pageable);
+        List<OrderedProductResponseDto> orderedProductResponseDtoList =
+                orderedProductPage.getContent().stream()
+                        .map(orderedProduct -> new OrderedProductResponseDto(orderedProduct, orderedProduct.getProduct()))
+                        .toList();
+        return new OrderedProductPageDto(
+                orderedProductResponseDtoList,
+                orderedProductPage.getTotalElements(),
+                orderedProductPage.getTotalPages(),
+                orderedProductPage.getNumber(),
+                orderedProductPage.getSize()
+        );
     }
 }

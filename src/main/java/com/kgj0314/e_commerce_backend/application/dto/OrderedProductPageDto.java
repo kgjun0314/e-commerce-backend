@@ -2,8 +2,8 @@ package com.kgj0314.e_commerce_backend.application.dto;
 
 import java.util.List;
 
-public record ProductPageDto(
-        List<ProductResponseDto> contents,
+public record OrderedProductPageDto(
+        List<OrderedProductResponseDto> contents,
         long totalElements,
         int totalPages,
         int pageNumber,

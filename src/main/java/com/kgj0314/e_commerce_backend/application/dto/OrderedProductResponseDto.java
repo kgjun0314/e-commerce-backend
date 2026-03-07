@@ -6,6 +6,8 @@ import com.kgj0314.e_commerce_backend.domain.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Getter
 public class OrderedProductResponseDto {
@@ -15,6 +17,7 @@ public class OrderedProductResponseDto {
     private Long price;
     private Long quantity;
     private OrderedProductStatus status;
+    private LocalDateTime createdDate;
 
     public OrderedProductResponseDto(OrderedProduct orderedProduct, Product product) {
         this.orderedProductId = orderedProduct.getId();
@@ -23,5 +26,6 @@ public class OrderedProductResponseDto {
         this.price = orderedProduct.getOrderPrice();
         this.quantity = orderedProduct.getQuantity();
         this.status = orderedProduct.getStatus();
+        this.createdDate = orderedProduct.getCreatedDate();
     }
 }

@@ -2,6 +2,8 @@ package com.kgj0314.e_commerce_backend.infrastructure.persistence;
 
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProductStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,8 +18,9 @@ public interface OrderedProductJpaRepository extends JpaRepository<OrderedProduc
         join fetch o.product p
         join fetch p.stock s
         where o.status = :status
+        order by o.createdDate desc
     """)
-    List<OrderedProduct> findByStatusFetchJoin(@Param("status") OrderedProductStatus status);
+    Page<OrderedProduct> findByStatusFetchJoin(@Param("status") OrderedProductStatus status, Pageable pageable);
 
     @Query("""
         select distinct o from OrderedProduct o

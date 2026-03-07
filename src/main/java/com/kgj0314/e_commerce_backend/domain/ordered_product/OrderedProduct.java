@@ -1,5 +1,6 @@
 package com.kgj0314.e_commerce_backend.domain.ordered_product;
 
+import com.kgj0314.e_commerce_backend.domain.BaseEntity;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Table(name = "ordered_products")
 @Getter @Setter
 @NoArgsConstructor
-public class OrderedProduct {
+public class OrderedProduct extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "order_product_id")
     private Long id;
