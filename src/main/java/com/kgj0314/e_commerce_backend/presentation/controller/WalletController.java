@@ -1,22 +1,17 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
 import com.kgj0314.e_commerce_backend.application.command.WalletChargeCommand;
-import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionPageDto;
 import com.kgj0314.e_commerce_backend.application.service.WalletService;
 import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletChargeResponseDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletResponseDto;
-import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequestMapping("/api/wallets")
 @RestController

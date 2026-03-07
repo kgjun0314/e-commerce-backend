@@ -41,9 +41,6 @@ public class Wallet extends BaseEntity {
     }
 
     public void decreaseBalance(Long price) {
-        if(this.balance < price) {
-            throw new NotEnoughBalanceException("잔액이 부족합니다. (지갑 ID: " + this.id + ")");
-        }
         this.balance -= price;
     }
 

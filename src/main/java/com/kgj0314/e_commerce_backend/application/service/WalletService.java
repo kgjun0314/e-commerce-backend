@@ -6,13 +6,9 @@ import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletJpaRepository;
 import com.kgj0314.e_commerce_backend.application.dto.WalletChargeResponseDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletResponseDto;
-import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service

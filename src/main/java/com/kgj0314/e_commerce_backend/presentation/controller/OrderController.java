@@ -16,8 +16,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/orders")
 @RestController
@@ -30,7 +30,7 @@ public class OrderController {
         List<OrderCommand> orderCommandList = orderRequestDtoList
                 .stream()
                 .map(orderRequestDto -> new OrderCommand(orderRequestDto.getProductId(), orderRequestDto.getQuantity()))
-                .toList();
+                .collect(Collectors.toList());
         OrderResponseDto orderResponseDto = orderService.createOrder(customUserDetails.getMember().getId(), orderCommandList);
         return ResponseEntity.created(URI.create("/api/orders/" + orderResponseDto.getId())).body(orderResponseDto);
     }
