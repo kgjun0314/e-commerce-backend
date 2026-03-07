@@ -1,6 +1,7 @@
 package com.kgj0314.e_commerce_backend.presentation.controller;
 
 import com.kgj0314.e_commerce_backend.application.command.OrderCommand;
+import com.kgj0314.e_commerce_backend.application.dto.OrderPageDto;
 import com.kgj0314.e_commerce_backend.application.service.OrderService;
 import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderRequestDto;
@@ -49,8 +50,8 @@ public class OrderController {
 //    }
 
     @GetMapping("/my")
-    public ResponseEntity<Page<OrderResponseDto>> getOrdersPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<OrderResponseDto> orderResponseDtoList = orderService.getOrders(customUserDetails.getMember().getId(), pageable);
-        return ResponseEntity.ok(orderResponseDtoList);
+    public ResponseEntity<OrderPageDto> getOrdersPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        OrderPageDto orderPageDto = orderService.getOrders(customUserDetails.getMember().getId(), pageable);
+        return ResponseEntity.ok(orderPageDto);
     }
 }

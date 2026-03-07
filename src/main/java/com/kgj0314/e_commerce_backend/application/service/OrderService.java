@@ -1,6 +1,7 @@
 package com.kgj0314.e_commerce_backend.application.service;
 
 import com.kgj0314.e_commerce_backend.application.command.OrderCommand;
+import com.kgj0314.e_commerce_backend.application.dto.OrderPageDto;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;
@@ -68,15 +69,21 @@ public class OrderService {
 //    }
 
     @Transactional(readOnly = true)
-    public Page<OrderResponseDto> getOrders(Long memberId, Pageable pageable) {
+    public OrderPageDto getOrders(Long memberId, Pageable pageable) {
         Page<Long> orderIdPage = orderJpaRepository.findOrderIdByMemberId(memberId, pageable);
 
         if(orderIdPage.isEmpty()) {
-            return Page.empty();
+            return new OrderPageDto(List.of(), 0, 0, pageable.getPageNumber(), pageable.getPageSize());
         }
         List<Order> orders = orderJpaRepository.findByIdListFetchJoin(orderIdPage.getContent());
 
         List<OrderResponseDto> orderResponseDtoList = orders.stream().map(OrderResponseDto::new).toList();
-        return new PageImpl<>(orderResponseDtoList, pageable, orderIdPage.getTotalElements());
+        return new OrderPageDto(
+                orderResponseDtoList,
+                orderIdPage.getTotalElements(),
+                orderIdPage.getTotalPages(),
+                orderIdPage.getNumber(),
+                orderIdPage.getSize()
+        );
     }
 }
