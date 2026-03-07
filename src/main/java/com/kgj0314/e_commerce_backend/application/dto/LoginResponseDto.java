@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MemberSignupResponseDto {
-    private String email;
-    private String username;
+public class LoginResponseDto {
+    private String token;
 }

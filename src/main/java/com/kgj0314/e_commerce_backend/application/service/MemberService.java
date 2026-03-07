@@ -1,12 +1,13 @@
 package com.kgj0314.e_commerce_backend.application.service;
 
 import com.kgj0314.e_commerce_backend.application.command.MemberSignupCommand;
+import com.kgj0314.e_commerce_backend.domain.exception.EntityNotFoundException;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedEmailException;
 import com.kgj0314.e_commerce_backend.domain.exception.UsedUsernameException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaRepository;
-import com.kgj0314.e_commerce_backend.application.dto.MemberSignupResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,7 +20,7 @@ public class MemberService {
     private final MemberJpaRepository memberJpaRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public MemberSignupResponseDto createMember(MemberSignupCommand memberSignupCommand) {
+    public MemberResponseDto createMember(MemberSignupCommand memberSignupCommand) {
         Member member = new Member();
         member.setEmail(memberSignupCommand.getEmail());
         member.setUsername(memberSignupCommand.getUsername());
@@ -40,9 +41,11 @@ public class MemberService {
                 }
             }
         }
-        return new MemberSignupResponseDto(
-                member.getEmail(),
-                member.getEmail()
-        );
+        return new MemberResponseDto(member);
+    }
+
+    public MemberResponseDto getMember(Long id) {
+        Member member = memberJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
+        return new MemberResponseDto(member);
     }
 }

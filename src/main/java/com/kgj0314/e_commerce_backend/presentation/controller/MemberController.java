@@ -2,61 +2,37 @@ package com.kgj0314.e_commerce_backend.presentation.controller;
 
 import com.kgj0314.e_commerce_backend.application.command.MemberSignupCommand;
 import com.kgj0314.e_commerce_backend.application.service.MemberService;
-import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
-import com.kgj0314.e_commerce_backend.infrastructure.security.JwtUtil;
-import com.kgj0314.e_commerce_backend.presentation.dto.MemberLoginRequestDto;
-import com.kgj0314.e_commerce_backend.application.dto.MemberLoginResponseDto;
 import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupRequestDto;
-import com.kgj0314.e_commerce_backend.application.dto.MemberSignupResponseDto;
+import com.kgj0314.e_commerce_backend.application.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/member")
+import java.net.URI;
+
+@RequestMapping("/api/members")
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
     private final MemberService memberService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<MemberSignupResponseDto> signup(@RequestBody MemberSignupRequestDto memberSignupRequestDto){
+    @PostMapping()
+    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberSignupRequestDto memberSignupRequestDto){
         MemberSignupCommand memberSignupCommand =
                 new MemberSignupCommand(
                         memberSignupRequestDto.getEmail(),
                         memberSignupRequestDto.getUsername(),
                         memberSignupRequestDto.getPassword()
                 );
-        MemberSignupResponseDto memberSignupResponseDto = memberService.createMember(memberSignupCommand);
-        return ResponseEntity.ok(memberSignupResponseDto);
+        MemberResponseDto memberResponseDto = memberService.createMember(memberSignupCommand);
+        return ResponseEntity.created(URI.create("/api/members/" + memberResponseDto.getId())).body(memberResponseDto);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<MemberLoginResponseDto> login(@RequestBody MemberLoginRequestDto memberLoginRequestDto){
-        Authentication authentication =
-                authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                memberLoginRequestDto.getUsername(),
-                                memberLoginRequestDto.getPassword()
-                        )
-                );
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        String token = null;
-        if (userDetails != null) {
-            token = jwtUtil.createToken(userDetails);
-        }
-
-        MemberLoginResponseDto memberLoginResponseDto = new MemberLoginResponseDto(token);
-
-        return ResponseEntity.ok(memberLoginResponseDto);
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<MemberResponseDto> getMember(@PathVariable Long id) {
+        MemberResponseDto memberResponseDto = memberService.getMember(id);
+        return ResponseEntity.ok().body(memberResponseDto);
     }
 }
