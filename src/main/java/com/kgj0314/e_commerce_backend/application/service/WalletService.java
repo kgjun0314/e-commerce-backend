@@ -44,12 +44,6 @@ public class WalletService {
     }
 
     @Transactional
-    public List<WalletTransactionResponseDto> getWalletTransactions(Long memberId){
-        Wallet wallet = walletJpaRepository.findByMemberIdFetchJoin(memberId);
-        return walletTransactionService.getWalletTransactionList(wallet);
-    }
-
-    @Transactional
     public WalletChargeResponseDto chargeWallet(Long memberId, WalletChargeCommand walletChargeCommand){
         Wallet wallet = getWalletWithLock(memberId);
         Long amount = walletChargeCommand.getAmount();

@@ -43,12 +43,6 @@ public class OrderController {
         return ResponseEntity.ok(orderResponseDto);
     }
 
-//    @GetMapping("/my")
-//    public ResponseEntity<List<OrderResponseDto>> getOrders(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-//        List<OrderResponseDto> orderResponseDtoList = orderService.getOrders(customUserDetails.getMember().getId());
-//        return ResponseEntity.ok(orderResponseDtoList);
-//    }
-
     @GetMapping("/my")
     public ResponseEntity<OrderPageDto> getOrdersPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         OrderPageDto orderPageDto = orderService.getOrders(customUserDetails.getMember().getId(), pageable);

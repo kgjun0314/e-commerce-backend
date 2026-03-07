@@ -57,17 +57,6 @@ public class OrderService {
         return new OrderResponseDto(order);
     }
 
-//    @Transactional(readOnly = true)
-//    public List<OrderResponseDto> getOrders(Long memberId) {
-//        List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
-//        List<Order> orderList = orderJpaRepository.findByMemberIdFetchJoin(memberId);
-//        orderList.
-//                forEach(order -> {
-//                    orderResponseDtoList.add(new OrderResponseDto(order));
-//                });
-//        return orderResponseDtoList;
-//    }
-
     @Transactional(readOnly = true)
     public OrderPageDto getOrders(Long memberId, Pageable pageable) {
         Page<Long> orderIdPage = orderJpaRepository.findOrderIdByMemberId(memberId, pageable);

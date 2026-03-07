@@ -20,11 +20,4 @@ public interface WalletJpaRepository extends JpaRepository<Wallet, Long> {
     Optional<Wallet> findByMemberIdWithLock(@Param("memberId") Long memberId);
 
     Wallet findByMemberId(Long memberId);
-
-    @Query("""
-        SELECT DISTINCT w FROM Wallet w
-        JOIN FETCH w.transactions t
-        WHERE w.member.id = :memberId
-    """)
-    Wallet findByMemberIdFetchJoin(@Param("memberId") Long memberId);
 }

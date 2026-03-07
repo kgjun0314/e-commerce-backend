@@ -1,11 +1,14 @@
 package com.kgj0314.e_commerce_backend.application.service;
 
+import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionPageDto;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransactionType;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletTransactionJpaRepository;
 import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,5 +64,26 @@ public class WalletTransactionService {
                     walletTransactionResponseDtoList.add(new WalletTransactionResponseDto(walletTransaction));
                 });
         return walletTransactionResponseDtoList;
+    }
+
+    @Transactional(readOnly = true)
+    public WalletTransactionPageDto getWalletTransactions(Long memberId, Pageable pageable) {
+        Page<Long> walletTransactionIdPage = walletTransactionJpaRepository.findWalletTransactionIdByWalletId(memberId, pageable);
+
+        if(walletTransactionIdPage.isEmpty()) {
+            return new WalletTransactionPageDto(List.of(), 0, 0, pageable.getPageNumber(), pageable.getPageSize());
+        }
+        List<WalletTransaction> walletTransactionList = walletTransactionJpaRepository.findByIdListFetchJoin(walletTransactionIdPage.getContent());
+
+        List<WalletTransactionResponseDto> walletTransactionResponseDtoList = walletTransactionList.stream()
+                .map(WalletTransactionResponseDto::new)
+                .toList();
+        return new WalletTransactionPageDto(
+                walletTransactionResponseDtoList,
+                walletTransactionIdPage.getTotalElements(),
+                walletTransactionIdPage.getTotalPages(),
+                walletTransactionIdPage.getNumber(),
+                walletTransactionIdPage.getSize()
+        );
     }
 }

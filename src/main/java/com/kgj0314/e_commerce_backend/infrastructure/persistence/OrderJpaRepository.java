@@ -12,8 +12,6 @@ import java.util.List;
 
 @Repository
 public interface OrderJpaRepository extends JpaRepository<Order, Long> {
-    List<Order> findByMemberId(Long memberId);
-
     @Query("""
         SELECT o.id FROM Order o
         WHERE o.member.id = :memberId
@@ -30,15 +28,6 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
         ORDER BY o.createdDate DESC
     """)
     List<Order> findByIdListFetchJoin(@Param("orderIds") List<Long> orderIds);
-
-//    @Query("""
-//        SELECT DISTINCT o FROM Order o
-//        JOIN FETCH o.orderedProducts op
-//        JOIN FETCH op.product p
-//        JOIN FETCH p.stock
-//        WHERE o.member.id = :memberId
-//    """)
-//    List<Order> findByMemberIdFetchJoin(@Param("memberId") Long memberId);
 
     @Query("""
         SELECT DISTINCT o FROM Order o
