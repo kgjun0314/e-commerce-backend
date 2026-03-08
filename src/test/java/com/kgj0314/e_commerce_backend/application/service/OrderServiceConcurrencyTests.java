@@ -96,7 +96,7 @@ public class OrderServiceConcurrencyTests {
     }
 
     @Test
-    @DisplayName("재고보다 많은 주문이 동시에 들어와도 재고는 음수가 되지 않는다")
+    @DisplayName("재고보다 많은 주문이 동시에 들어와도 재고는 음수가 되지 않는다.")
     public void createOrder1() throws InterruptedException {
         // Given
         long initMoney = 100000L;
