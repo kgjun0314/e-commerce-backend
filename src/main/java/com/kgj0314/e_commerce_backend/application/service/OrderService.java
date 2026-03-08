@@ -39,7 +39,7 @@ public class OrderService {
 
         List<Long> sortedProductIds = quantityByProduct.keySet()
                 .stream()
-                .sorted()
+//                .sorted()
                 .toList();
 
         List<Stock> stocks = stockJpaRepository.findByProductIdListWithLock(sortedProductIds);

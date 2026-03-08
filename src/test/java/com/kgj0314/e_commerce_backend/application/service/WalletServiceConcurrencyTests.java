@@ -31,7 +31,7 @@ public class WalletServiceConcurrencyTests {
     @DisplayName("잔고 충전 동시성 테스트")
     public void chargeWallet() throws InterruptedException {
         // Given
-        Long balanceBefore = 50000L;
+        long balanceBefore = 50000L;
         Wallet wallet = new Wallet();
         wallet.setBalance(balanceBefore);
         Member member = new Member();
@@ -44,7 +44,7 @@ public class WalletServiceConcurrencyTests {
         memberJpaRepository.flush();
 
         int threadCount = 50;
-        Long amount = 10000L;
+        long amount = 10000L;
 
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -62,10 +62,8 @@ public class WalletServiceConcurrencyTests {
 
         latch.await();
 
-        // DB에서 다시 조회
-        Wallet walletAfter = walletJpaRepository.findById(wallet.getId()).orElseThrow();
-
         // Then
+        Wallet walletAfter = walletJpaRepository.findById(wallet.getId()).orElseThrow();
         assertEquals(balanceBefore + (amount * threadCount), walletAfter.getBalance());
     }
 }
