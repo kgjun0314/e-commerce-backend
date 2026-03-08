@@ -40,6 +40,7 @@ public class MemberService {
                     throw new UsedUsernameException("이미 사용 중인 사용자 이름입니다.");
                 }
             }
+            throw e;
         }
         return new MemberResponseDto(member);
     }

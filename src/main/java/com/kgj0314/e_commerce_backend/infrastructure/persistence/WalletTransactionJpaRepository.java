@@ -15,7 +15,7 @@ public interface WalletTransactionJpaRepository extends JpaRepository<WalletTran
         WHERE t.wallet.member.id = :memberId
         ORDER BY t.createdDate DESC
     """)
-    Page<Long> findWalletTransactionIdByWalletId(@Param("memberId") Long memberId, Pageable pageable);
+    Page<Long> findWalletTransactionIdByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
     @Query("""
         SELECT t FROM WalletTransaction t

@@ -52,6 +52,9 @@ public class OrderedProductService {
         else if(currentStatus == OrderedProductStatus.CANCELED) {
             throw new CannotChangeStatusException("이미 취소된 주문입니다.");
         }
+        else if(currentStatus == OrderedProductStatus.COMPLETED) {
+            throw new CannotChangeStatusException("이미 완료된 주문입니다.");
+        }
 
         orderedProduct.setStatus(nextStatus);
         return new OrderedProductResponseDto(orderedProduct, orderedProduct.getProduct());
@@ -67,7 +70,7 @@ public class OrderedProductService {
         status.checkCancellable();
         Product product = orderedProduct.getProduct();
         Stock stock = stockService.getStockWithLock(product.getId());
-        stockService.increaseStock(stock, orderedProduct.getQuantity());
+        stockService.increaseQuantity(stock, orderedProduct.getQuantity());
         Wallet wallet = walletService.getWalletWithLock(member.getId());
         walletService.increaseBalance(wallet, orderedProduct.getTotalPrice(), orderedProduct.getId());
         orderedProduct.setStatus(OrderedProductStatus.CANCELED);

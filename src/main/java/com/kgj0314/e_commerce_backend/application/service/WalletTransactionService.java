@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,7 +56,7 @@ public class WalletTransactionService {
 
     @Transactional(readOnly = true)
     public WalletTransactionPageDto getWalletTransactions(Long memberId, Pageable pageable) {
-        Page<Long> walletTransactionIdPage = walletTransactionJpaRepository.findWalletTransactionIdByWalletId(memberId, pageable);
+        Page<Long> walletTransactionIdPage = walletTransactionJpaRepository.findWalletTransactionIdByMemberId(memberId, pageable);
 
         if(walletTransactionIdPage.isEmpty()) {
             return new WalletTransactionPageDto(List.of(), 0, 0, pageable.getPageNumber(), pageable.getPageSize());

@@ -2,7 +2,6 @@ package com.kgj0314.e_commerce_backend.application.service;
 
 import com.kgj0314.e_commerce_backend.application.command.OrderCommand;
 import com.kgj0314.e_commerce_backend.application.dto.OrderPageDto;
-import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
@@ -58,7 +57,7 @@ public class OrderService {
                     Long quantity = quantityByProduct.get(productId);
                     Stock stock = stockMap.get(productId);
 
-                    stockService.decreaseStock(stock, quantity);
+                    stockService.decreaseQuantity(stock, quantity);
 
                     Product product = stock.getProduct();
                     OrderedProduct orderedProduct = new OrderedProduct(product, quantity);

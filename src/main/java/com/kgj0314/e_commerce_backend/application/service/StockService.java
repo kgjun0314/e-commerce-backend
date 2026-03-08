@@ -13,12 +13,12 @@ public class StockService {
     private final StockJpaRepository stockJpaRepository;
 
     @Transactional
-    public void decreaseStock(Stock stock, Long quantity) {
+    public void decreaseQuantity(Stock stock, Long quantity) {
         stock.decreaseQuantity(quantity);
     }
 
     @Transactional
-    public void increaseStock(Stock stock, Long quantity) {
+    public void increaseQuantity(Stock stock, Long quantity) {
         stock.increaseQuantity(quantity);
     }
 
