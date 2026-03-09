@@ -3,7 +3,7 @@ version: "3.8"
 services:
   app:
     build: .
-    container_name: spring-board-app
+    container_name: e-commerce-backend-app
     restart: always
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
