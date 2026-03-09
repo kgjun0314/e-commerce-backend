@@ -43,7 +43,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -i $HOME/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-            cd /home/ubuntu/your_service
+            cd /home/ubuntu/e-commerce-backend
             git pull origin main
             ./gradlew clean bootJar
             docker-compose -f docker-compose.prod.yml down
