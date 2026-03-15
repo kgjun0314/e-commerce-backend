@@ -94,4 +94,18 @@ public class OrderService {
                 orderIdPage.getSize()
         );
     }
+
+    @Transactional(readOnly = true)
+    public OrderPageDto getOrders_v2(Long memberId, Pageable pageable) {
+        Page<Order> orderPage = orderJpaRepository.findByMemberId(memberId, pageable);
+
+        List<OrderResponseDto> orderResponseDtoList = orderPage.getContent().stream().map(OrderResponseDto::new).toList();
+        return new OrderPageDto(
+                orderResponseDtoList,
+                orderPage.getTotalElements(),
+                orderPage.getTotalPages(),
+                orderPage.getNumber(),
+                orderPage.getSize()
+        );
+    }
 }

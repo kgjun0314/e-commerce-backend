@@ -37,4 +37,11 @@ public interface OrderJpaRepository extends JpaRepository<Order, Long> {
         WHERE o.id = :id
     """)
     Order findByIdFetchJoin(@Param("id") Long id);
+
+    @Query("""
+        SELECT o FROM Order o
+        WHERE o.member.id = :memberId
+        ORDER BY o.createdDate DESC
+    """)
+    Page<Order> findByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 }
