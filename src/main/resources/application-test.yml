@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: "user"
+    password: "4904"
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+jwt:
+  secret: "1a2b3c4e5a6d7f8c9e0b7a9d1f4c6e8b2a7d0c3f5e9b1a6d8c2f4e7b9a1d3c6"
