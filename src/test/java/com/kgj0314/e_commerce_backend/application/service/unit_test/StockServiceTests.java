@@ -1,33 +1,37 @@
-package com.kgj0314.e_commerce_backend.application.service;
+package com.kgj0314.e_commerce_backend.application.service.unit_test;
 
-import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughBalanceException;
+import com.kgj0314.e_commerce_backend.application.service.StockService;
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughQuantityException;
-import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
-import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.ProductJpaRepository;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.StockJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 public class StockServiceTests {
-    @Autowired
-    ProductJpaRepository productJpaRepository;
-    @Autowired
-    StockService stockService;
-    @Autowired
+    @Mock
     StockJpaRepository stockJpaRepository;
+    @InjectMocks
+    StockService stockService;
 
     @Test
     @DisplayName("재고 > 수량일 때 재고가 정상적으로 감소한다.")
@@ -41,10 +45,10 @@ public class StockServiceTests {
         product.setPrice(10000L);
         product.setStock(stock);
         stock.setProduct(product);
-        productJpaRepository.save(product);
-        productJpaRepository.flush();
 
         Long quantity = 10L;
+
+        when(stockJpaRepository.findById(stock.getId())).thenReturn(Optional.of(stock));
 
         // When
         stockService.decreaseQuantity(stock, quantity);
@@ -52,6 +56,7 @@ public class StockServiceTests {
         // Then
         Stock stockFound = stockJpaRepository.findById(stock.getId()).orElseThrow();
         assertEquals(initQuantity - quantity, stockFound.getQuantity());
+        verify(stockJpaRepository).findById(stock.getId());
     }
 
     @Test
@@ -66,8 +71,6 @@ public class StockServiceTests {
         product.setPrice(10000L);
         product.setStock(stock);
         stock.setProduct(product);
-        productJpaRepository.save(product);
-        productJpaRepository.flush();
 
         Long quantity = 10L;
 
@@ -89,10 +92,10 @@ public class StockServiceTests {
         product.setPrice(10000L);
         product.setStock(stock);
         stock.setProduct(product);
-        productJpaRepository.save(product);
-        productJpaRepository.flush();
 
         Long quantity = 10L;
+
+        when(stockJpaRepository.findById(stock.getId())).thenReturn(Optional.of(stock));
 
         // When
         stockService.increaseQuantity(stock, quantity);
@@ -100,6 +103,7 @@ public class StockServiceTests {
         // Then
         Stock stockFound = stockJpaRepository.findById(stock.getId()).orElseThrow();
         assertEquals(initQuantity + quantity, stockFound.getQuantity());
+        verify(stockJpaRepository).findById(stock.getId());
     }
 
     @Test
@@ -114,13 +118,14 @@ public class StockServiceTests {
         product.setPrice(10000L);
         product.setStock(stock);
         stock.setProduct(product);
-        productJpaRepository.save(product);
-        productJpaRepository.flush();
+
+        when(stockJpaRepository.findByProductIdWithLock(product.getId())).thenReturn(Optional.of(stock));
 
         // When
         Stock stockFound = stockService.getStockWithLock(product.getId());
 
         // Then
         assertEquals(stock, stockFound);
+        verify(stockJpaRepository).findByProductIdWithLock(product.getId());
     }
 }

@@ -1,7 +1,8 @@
-package com.kgj0314.e_commerce_backend.application.service;
+package com.kgj0314.e_commerce_backend.application.service.unit_test;
 
 import com.kgj0314.e_commerce_backend.application.command.WalletChargeCommand;
-import com.kgj0314.e_commerce_backend.application.dto.WalletResponseDto;
+import com.kgj0314.e_commerce_backend.application.service.WalletService;
+import com.kgj0314.e_commerce_backend.application.service.WalletTransactionService;
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughBalanceException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
@@ -9,24 +10,33 @@ import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaReposi
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 public class WalletServiceTests {
-    @Autowired WalletService walletService;
-    @Autowired
+    @Mock
     WalletJpaRepository walletJpaRepository;
-    @Autowired
-    MemberJpaRepository memberJpaRepository;
+    @Mock
+    WalletTransactionService walletTransactionService;
+    @InjectMocks
+    WalletService walletService;
 
     @Test
     @DisplayName("잔고 > 가격일 때 잔고가 정상적으로 감소한다.")
@@ -41,11 +51,11 @@ public class WalletServiceTests {
         member.setPassword("1234");
         member.setWallet(wallet);
         wallet.setMember(member);
-        memberJpaRepository.save(member);
-        memberJpaRepository.flush();
 
         Long orderId = 1L;
         Long price = 10000L;
+
+        when(walletJpaRepository.findById(wallet.getId())).thenReturn(Optional.of(wallet));
 
         // When
         walletService.decreaseBalance(wallet, price, orderId);
@@ -53,6 +63,7 @@ public class WalletServiceTests {
         // Then
         Wallet walletFound = walletJpaRepository.findById(wallet.getId()).orElseThrow();
         assertEquals(initMoney - price, walletFound.getBalance());
+        verify(walletJpaRepository).findById(wallet.getId());
     }
 
     @Test
@@ -68,8 +79,6 @@ public class WalletServiceTests {
         member.setPassword("1234");
         member.setWallet(wallet);
         wallet.setMember(member);
-        memberJpaRepository.save(member);
-        memberJpaRepository.flush();
 
         Long orderId = 1L;
         Long price = 10000L;
@@ -93,11 +102,11 @@ public class WalletServiceTests {
         member.setPassword("1234");
         member.setWallet(wallet);
         wallet.setMember(member);
-        memberJpaRepository.save(member);
-        memberJpaRepository.flush();
 
         Long orderId = 1L;
         Long price = 10000L;
+
+        when(walletJpaRepository.findById(wallet.getId())).thenReturn(Optional.of(wallet));
 
         // When
         walletService.increaseBalance(wallet, price, orderId);
@@ -105,6 +114,7 @@ public class WalletServiceTests {
         // Then
         Wallet walletFound = walletJpaRepository.findById(wallet.getId()).orElseThrow();
         assertEquals(initMoney + price, walletFound.getBalance());
+        verify(walletJpaRepository).findById(wallet.getId());
     }
 
     @Test
@@ -118,14 +128,15 @@ public class WalletServiceTests {
         member.setPassword("1234");
         member.setWallet(wallet);
         wallet.setMember(member);
-        memberJpaRepository.save(member);
-        memberJpaRepository.flush();
+
+        when(walletJpaRepository.findByMemberIdWithLock(member.getId())).thenReturn(Optional.of(wallet));
 
         // When
         Wallet walletFound = walletService.getWalletWithLock(member.getId());
 
         // Then
         assertEquals(wallet, walletFound);
+        verify(walletJpaRepository).findByMemberIdWithLock(member.getId());
     }
 
     @Test
@@ -141,13 +152,14 @@ public class WalletServiceTests {
         member.setPassword("1234");
         member.setWallet(wallet);
         wallet.setMember(member);
-        memberJpaRepository.save(member);
-        memberJpaRepository.flush();
 
         Long amount = 10000L;
         WalletChargeCommand walletChargeCommand = new WalletChargeCommand(amount);
 
         Long balanceAfter = balanceBefore + amount;
+
+        when(walletJpaRepository.findByMemberIdWithLock(member.getId())).thenReturn(Optional.of(wallet));
+        when(walletJpaRepository.findById(wallet.getId())).thenReturn(Optional.of(wallet));
 
         // When
         walletService.chargeWallet(member.getId(), walletChargeCommand);
@@ -155,5 +167,7 @@ public class WalletServiceTests {
         // Then
         Wallet walletFound = walletJpaRepository.findById(wallet.getId()).orElseThrow();
         assertEquals(balanceAfter, walletFound.getBalance());
+        verify(walletJpaRepository).findByMemberIdWithLock(member.getId());
+        verify(walletJpaRepository).findById(wallet.getId());
     }
 }

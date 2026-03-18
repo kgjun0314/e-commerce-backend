@@ -1,7 +1,8 @@
-package com.kgj0314.e_commerce_backend.application.service;
+package com.kgj0314.e_commerce_backend.application.service.integration_test;
 
 import com.kgj0314.e_commerce_backend.application.command.MemberSignupCommand;
 import com.kgj0314.e_commerce_backend.application.dto.MemberResponseDto;
+import com.kgj0314.e_commerce_backend.application.service.MemberService;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 public class MemberServiceTests {
-    @Autowired MemberService memberService;
+    @Autowired
+    MemberService memberService;
     @Autowired
     MemberJpaRepository memberJpaRepository;
 
@@ -36,7 +38,7 @@ public class MemberServiceTests {
         memberService.createMember(memberSignupCommand);
 
         // Then
-        Member member = memberJpaRepository.findAll().get(0);
+        Member member = memberJpaRepository.findByUsername(memberSignupCommand.getUsername()).orElseThrow();
         assertEquals(memberSignupCommand.getEmail(), member.getEmail());
         assertEquals(memberSignupCommand.getUsername(), member.getUsername());
     }

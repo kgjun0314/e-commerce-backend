@@ -1,13 +1,13 @@
-package com.kgj0314.e_commerce_backend.application.service;
+package com.kgj0314.e_commerce_backend.application.service.integration_test;
 
 import com.kgj0314.e_commerce_backend.application.command.OrderedProductStatusCommand;
 import com.kgj0314.e_commerce_backend.application.dto.OrderedProductPageDto;
 import com.kgj0314.e_commerce_backend.application.dto.OrderedProductResponseDto;
 import com.kgj0314.e_commerce_backend.application.query.OrderedProductStatusQuery;
+import com.kgj0314.e_commerce_backend.application.service.OrderedProductService;
 import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.CannotChangeStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.MemberIdMismatchException;
-import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughQuantityException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;

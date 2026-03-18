@@ -1,8 +1,9 @@
-package com.kgj0314.e_commerce_backend.application.service;
+package com.kgj0314.e_commerce_backend.application.service.integration_test;
 
 import com.kgj0314.e_commerce_backend.application.command.OrderCommand;
 import com.kgj0314.e_commerce_backend.application.dto.OrderPageDto;
 import com.kgj0314.e_commerce_backend.application.dto.OrderResponseDto;
+import com.kgj0314.e_commerce_backend.application.service.OrderService;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;
