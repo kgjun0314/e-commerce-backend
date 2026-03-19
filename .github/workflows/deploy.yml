@@ -39,11 +39,6 @@ jobs:
       - name: Run Integration Test
         run: ./gradlew integrationTest
 
-#      - name: Debug Network
-#        run: |
-#          curl ifconfig.me
-#          curl https://api.ipify.org
-
       - name: Get Github Action IP
         id: ip
         uses: haythem/public-ip@v1.2
