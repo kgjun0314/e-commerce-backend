@@ -36,12 +36,12 @@ jobs:
       - name: Get Gradle Execution Permission
         run: chmod +x gradlew
 
-      - name: Run Integration Test
-        run: ./gradlew integrationTest
-
       - name: Get Github Action IP
         id: ip
         uses: haythem/public-ip@v1.2
+
+      - name: Run Integration Test
+        run: ./gradlew integrationTest
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
