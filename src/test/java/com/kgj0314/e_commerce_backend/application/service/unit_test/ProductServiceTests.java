@@ -26,8 +26,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTests {
     @Mock

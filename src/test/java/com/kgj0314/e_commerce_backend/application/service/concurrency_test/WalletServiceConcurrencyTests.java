@@ -1,4 +1,4 @@
-package com.kgj0314.e_commerce_backend.application.service.integration_test;
+package com.kgj0314.e_commerce_backend.application.service.concurrency_test;
 
 import com.kgj0314.e_commerce_backend.application.command.WalletChargeCommand;
 import com.kgj0314.e_commerce_backend.application.service.WalletService;

@@ -40,8 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@ActiveProfiles("test")
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class OrderedProductServiceTests {
     @Mock

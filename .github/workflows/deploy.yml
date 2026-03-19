@@ -1,16 +1,43 @@
-name: Deploy to EC2
+name: Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: 'postgres'
+          POSTGRES_USER: 'user'
+          POSTGRES_PASSWORD: '4904'
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U user"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: JDK Set Up
+        uses: actions/setup-java@3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Get Gradle Execution Permission
+        run: chmod +x gradlew
+
+      - name: Run Integration Test
+        run: ./gradlew integrationTest
 
       - name: Get Github Action IP
         id: ip

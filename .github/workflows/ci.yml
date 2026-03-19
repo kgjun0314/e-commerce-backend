@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: JDK Set Up
+        uses: actions/setup-java@3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Get Gradle Execution Permission
+        run: chmod +x gradlew
+
+      - name: Run Unit Test
+        run: ./gradlew unitTest

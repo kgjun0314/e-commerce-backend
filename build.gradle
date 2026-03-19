@@ -50,6 +50,24 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+tasks.register('unitTest', Test) {
+	useJUnitPlatform()
+
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	include '**/unit_test/**'
+}
+
+tasks.register('integrationTest', Test) {
+	useJUnitPlatform()
+
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	include '**/integration_test/**'
+}
+
 tasks.bootJar {
 	archiveFileName.set("app.jar")
 }

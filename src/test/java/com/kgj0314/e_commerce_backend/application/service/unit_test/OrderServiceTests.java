@@ -37,8 +37,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceTests {
     @Mock
@@ -47,6 +45,8 @@ public class OrderServiceTests {
     StockJpaRepository stockJpaRepository;
     @Mock
     WalletService walletService;
+    @Mock
+    StockService stockService;
     @InjectMocks
     OrderService orderService;
 
