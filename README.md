@@ -51,7 +51,9 @@ Spring Boot 기반의 주문 관리 API 백엔드 서버입니다.
 - infrastructure: DB, 외부 시스템 연동
 
 ## ERD
-프로젝트의 ERD는 다음과 같습니다. (https://www.erdcloud.com/d/49QazgufuMhYAPgwL)
+프로젝트의 ERD는 다음과 같습니다. 
+- ERDCloud: https://www.erdcloud.com/d/49QazgufuMhYAPgwL
+
 ![alt text](erd.png)
 
 ### 설계 의도
