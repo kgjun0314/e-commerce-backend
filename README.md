@@ -108,8 +108,7 @@ Swagger UI에서 인증 방법:
 
 1. api/auth/login API로 access token 발급
 2. Swagger 상단의 Authorize 버튼 클릭
-3. 아래 형식으로 입력
-<ACCESS_TOKEN>
+3. 발급 받은 access token 입력
 4. 이후 인증이 필요한 API 호출 가능
 
 #### Notes
