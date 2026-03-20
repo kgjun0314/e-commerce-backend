@@ -91,19 +91,15 @@ Spring Boot 기반의 주문 관리 API 백엔드 서버입니다.
 
 ## API Documentation
 
-#### 동시 주문 처리 시 재고 불일치 문제
-
-#### N + 1 문제 및 페이징 처리 이슈
-
-#### Base URL
+### Base URL
 - Local: http://localhost:8080
 - Prod: https://poststory.co.kr
 
-#### Swagger UI
+### Swagger UI
 - Local: http://localhost:8080/swagger-ui/index.html
 - Prod: https://poststory.co.kr/swagger-ui/index.html 
 
-#### Authentication
+### Authentication
 이 API는 JWT 기반 인증을 사용합니다.
 ```bash
 Authorization: Bearer <ACCESS_TOKEN>
@@ -115,11 +111,15 @@ Swagger UI에서 인증 방법:
 3. 발급 받은 access token 입력
 4. 이후 인증이 필요한 API 호출 가능
 
-#### Notes
+### Notes
 - 모든 요청은 JSON 형식입니다.
 - 인증이 필요한 API는 Authorization 헤더를 포함해야 합니다.
 
 ## Troubleshooting
+
+### 동시 주문 처리 시 재고 불일치 문제
+
+### N + 1 문제 및 페이징 처리 이슈
 
 ## Getting Started
 
