@@ -91,6 +91,10 @@ Spring Boot 기반의 주문 관리 API 백엔드 서버입니다.
 
 ## API Documentation
 
+#### 동시 주문 처리 시 재고 불일치 문제
+
+#### N + 1 문제 및 페이징 처리 이슈
+
 #### Base URL
 - Local: http://localhost:8080
 - Prod: https://poststory.co.kr
