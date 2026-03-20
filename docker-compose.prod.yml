@@ -1,8 +1,6 @@
 services:
   app:
-    build: .
-    container_name: e-commerce-backend-app
-    restart: always
+    image: kgj0314/ecommerce:latest
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}

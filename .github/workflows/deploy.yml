@@ -52,7 +52,7 @@ jobs:
 
       # Jar 빌드
       - name: Build Jar
-        run: ./gradlew bootJar
+        run: ./gradlew clean bootJar
 
       # 이미지 빌드 & 푸시
       - name: Build & Push Docker Image
