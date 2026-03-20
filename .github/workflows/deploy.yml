@@ -12,9 +12,9 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_DB: 'postgres'
-          POSTGRES_USER: 'user'
-          POSTGRES_PASSWORD: '4904'
+          POSTGRES_DB: postgres
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: 4904
         ports:
           - 5432:5432
         options: >-
@@ -24,64 +24,88 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: Checkout Code
+      # 1. 코드 가져오기
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: JDK Set Up
+      # 2. Java 세팅
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
-      - name: Get Gradle Execution Permission
+      # 3. 권한
+      - name: Grant execute permission
         run: chmod +x gradlew
 
+      # 4. 테스트
       - name: Run Integration Test
         run: ./gradlew integrationTest
 
+      # 5. DockerHub 로그인
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 6. 이미지 빌드 & 푸시
+      - name: Build & Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/ecommerce:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/ecommerce:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce:latest
+
+      # 7. GitHub Actions IP 가져오기
       - name: Get Public IP
         id: ip
         run: echo "ipv4=$(curl -s https://api.ipify.org)" >> $GITHUB_OUTPUT
 
+      # 8. AWS 인증
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2  # 본인 리전으로 변경
+          aws-region: ap-northeast-2
 
-      - name: Authorize IP in Security Group
+      # 9. SSH 허용
+      - name: Authorize IP
         run: |
-          aws ec2 authorize-security-group-ingress --group-name security_group --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ap-northeast-2  # 본인 리전으로 변경
+          aws ec2 authorize-security-group-ingress \
+          --group-name security_group \
+          --protocol tcp \
+          --port 22 \
+          --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
-      - name: Set Up SSH
-        shell: bash
+      # 10. SSH 설정
+      - name: Setup SSH
         run: |
-          mkdir -p $HOME/.ssh
-          chmod 700 $HOME/.ssh
-          printf "%s" "${{ secrets.KEY }}" > $HOME/.ssh/id_rsa
-          chmod 600 $HOME/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.HOST }} >> $HOME/.ssh/known_hosts || true
+          mkdir -p ~/.ssh
+          echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
+      # 11. EC2 배포
       - name: Deploy to EC2
         run: |
-          ssh -i $HOME/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-            cd /home/ubuntu/e-commerce-backend
-            git pull origin main
-            ./gradlew clean bootJar
+          ssh -i ~/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+
+            docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce:latest
+
             docker-compose -f docker-compose.prod.yml down
-            docker-compose -f docker-compose.prod.yml up -d --build
+            docker-compose -f docker-compose.prod.yml up -d
+
           EOF
 
-      - name: Remove IP from Security Group
+      # 12. SSH 차단
+      - name: Remove IP
         if: always()
         run: |
-          aws ec2 revoke-security-group-ingress --group-name security_group --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ap-northeast-2
+          aws ec2 revoke-security-group-ingress \
+          --group-name security_group \
+          --protocol tcp \
+          --port 22 \
+          --cidr ${{ steps.ip.outputs.ipv4 }}/32
