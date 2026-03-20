@@ -14,7 +14,7 @@ Spring Boot 기반 주문 관리 API 서버입니다.
 - SCM: Git / Github
 
 ## Architecture
-
+![alt text](architecture_diagram.png)
 
 ## Structure
 ![alt text](image.png)
