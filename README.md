@@ -88,5 +88,34 @@ Spring Boot 기반의 주문 관리 API 백엔드 서버입니다.
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/your-repo.git
-cd your-project
+git clone https://github.com/kgjun0314/e-commerce-backend.git
+cd e-commerce-backend
+```
+
+### 2. Create .env File
+프로젝트 루트에 다음처럼 .env 파일을 생성해주세요.
+```bash
+# Database
+POSTGRES_USER=user
+POSTGRES_PASSWORD=1234
+POSTGRES_DB=postgres
+
+# JWT
+JWT_SECRET=yoursecretkeyyoursecretkeyyoursecretkeyyoursecretkeyyoursecretkey
+
+# Spring Profile
+SPRING_PROFILES_ACTIVE=dev
+```
+
+### 3. Build & Run
+```bash
+./gradlew clean bootJar
+docker-compose up -d --build
+# 또는 
+# ./gradlew clean bootJar
+# docker compose up -d --build
+```
+
+### 4. Access
+- API: http://localhost:8080
+- Swagger: http://localhost:8080/swagger-ui/index.html
