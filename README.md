@@ -92,7 +92,7 @@ Spring Boot 기반의 주문 관리 API 백엔드 서버입니다.
 ## API Documentation
 
 #### Base URL
-- Dev: http://localhost:8080
+- Local: http://localhost:8080
 - Prod: https://poststory.co.kr
 
 #### Swagger UI
