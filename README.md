@@ -90,7 +90,31 @@ Spring Boot 기반의 주문 관리 API 백엔드 서버입니다.
 이를 통해 주문 데이터의 정합성과 확장성을 확보했습니다.
 
 ## API Documentation
-- Swagger UI: https://poststory.co.kr/swagger-ui/index.html 
+
+#### Base URL
+- Dev: http://localhost:8080
+- Prod: https://poststory.co.kr
+
+#### Swagger UI
+- Local: http://localhost:8080/swagger-ui/index.html
+- Prod: https://poststory.co.kr/swagger-ui/index.html 
+
+#### Authentication
+이 API는 JWT 기반 인증을 사용합니다.
+```bash
+Authorization: Bearer <ACCESS_TOKEN>
+```
+Swagger UI에서 인증 방법:
+
+1. api/auth/login API로 access token 발급
+2. Swagger 상단의 Authorize 버튼 클릭
+3. 아래 형식으로 입력
+<ACCESS_TOKEN>
+4. 이후 인증이 필요한 API 호출 가능
+
+#### Notes
+- 모든 요청은 JSON 형식입니다.
+- 인증이 필요한 API는 Authorization 헤더를 포함해야 합니다.
 
 ## Troubleshooting
 
@@ -125,7 +149,3 @@ docker-compose up -d --build
 # ./gradlew clean bootJar
 # docker compose up -d --build
 ```
-
-### 4. Access
-- API: http://localhost:8080
-- Swagger: http://localhost:8080/swagger-ui/index.html
