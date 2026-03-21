@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class LoginRequestDto {
-    @Schema(description = "아이디", example = "username")
+    @Schema(description = "사용자명", example = "username")
     private String username;
     @Schema(description = "패스워드", example = "password")
     private String password;

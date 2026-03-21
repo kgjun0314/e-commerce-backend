@@ -9,6 +9,6 @@ public class ProductRequestDto {
     private String name;
     @Schema(description = "가격", example = "1000")
     private Long price;
-    @Schema(description = "수량", example = "100")
+    @Schema(description = "재고", example = "100")
     private Long quantity;
 }

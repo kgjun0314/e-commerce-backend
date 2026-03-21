@@ -7,7 +7,7 @@ import lombok.Getter;
 public class MemberSignupRequestDto {
     @Schema(description = "이메일", example = "email@mail.com")
     private String email;
-    @Schema(description = "아이디", example = "username")
+    @Schema(description = "사용자명", example = "username")
     private String username;
     @Schema(description = "패스워드", example = "password")
     private String password;

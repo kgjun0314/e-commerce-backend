@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderedProductStatusRequestDto {
-    @Schema(description = "상태", example = "SHIPPING")
+    @Schema(description = "상태", example = "CREATED")
     private OrderedProductStatus status;
 }
