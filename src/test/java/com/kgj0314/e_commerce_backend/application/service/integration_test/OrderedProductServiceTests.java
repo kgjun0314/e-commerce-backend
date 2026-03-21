@@ -9,6 +9,7 @@ import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusEx
 import com.kgj0314.e_commerce_backend.domain.exception.CannotChangeStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.MemberIdMismatchException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProductStatus;
@@ -56,6 +57,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -94,6 +96,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -143,6 +146,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -182,6 +186,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -223,6 +228,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -262,6 +268,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -289,6 +296,7 @@ public class OrderedProductServiceTests {
         member2.setEmail("email2@mail.com");
         member2.setUsername("Lee2");
         member2.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member2.setWallet(wallet2);
         wallet2.setMember(member2);
         memberJpaRepository.save(member2);
@@ -309,6 +317,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -347,6 +356,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -387,6 +397,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);

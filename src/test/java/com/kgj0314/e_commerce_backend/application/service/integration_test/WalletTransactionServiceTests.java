@@ -4,6 +4,7 @@ import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionPageDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletTransactionResponseDto;
 import com.kgj0314.e_commerce_backend.application.service.WalletTransactionService;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransaction;
 import com.kgj0314.e_commerce_backend.domain.wallet.WalletTransactionType;
@@ -41,6 +42,7 @@ public class WalletTransactionServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -68,6 +70,7 @@ public class WalletTransactionServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -93,6 +96,7 @@ public class WalletTransactionServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -120,6 +124,7 @@ public class WalletTransactionServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);

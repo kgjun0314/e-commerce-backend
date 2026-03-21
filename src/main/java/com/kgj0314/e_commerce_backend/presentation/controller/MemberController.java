@@ -2,6 +2,7 @@ package com.kgj0314.e_commerce_backend.presentation.controller;
 
 import com.kgj0314.e_commerce_backend.application.command.MemberSignupCommand;
 import com.kgj0314.e_commerce_backend.application.service.MemberService;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.presentation.dto.MemberSignupRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,27 @@ import java.net.URI;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping()
-    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberSignupRequestDto memberSignupRequestDto){
+    @PostMapping("/as_user")
+    public ResponseEntity<MemberResponseDto> signupAsUser(@RequestBody MemberSignupRequestDto memberSignupRequestDto){
         MemberSignupCommand memberSignupCommand =
                 new MemberSignupCommand(
                         memberSignupRequestDto.getEmail(),
                         memberSignupRequestDto.getUsername(),
-                        memberSignupRequestDto.getPassword()
+                        memberSignupRequestDto.getPassword(),
+                        Role.ROLE_USER
+                );
+        MemberResponseDto memberResponseDto = memberService.createMember(memberSignupCommand);
+        return ResponseEntity.created(URI.create("/api/members/" + memberResponseDto.getId())).body(memberResponseDto);
+    }
+
+    @PostMapping("/as_admin")
+    public ResponseEntity<MemberResponseDto> signupAsAdmin(@RequestBody MemberSignupRequestDto memberSignupRequestDto){
+        MemberSignupCommand memberSignupCommand =
+                new MemberSignupCommand(
+                        memberSignupRequestDto.getEmail(),
+                        memberSignupRequestDto.getUsername(),
+                        memberSignupRequestDto.getPassword(),
+                        Role.ROLE_ADMIN
                 );
         MemberResponseDto memberResponseDto = memberService.createMember(memberSignupCommand);
         return ResponseEntity.created(URI.create("/api/members/" + memberResponseDto.getId())).body(memberResponseDto);

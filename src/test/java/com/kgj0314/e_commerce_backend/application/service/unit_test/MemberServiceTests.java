@@ -4,6 +4,7 @@ import com.kgj0314.e_commerce_backend.application.command.MemberSignupCommand;
 import com.kgj0314.e_commerce_backend.application.dto.MemberResponseDto;
 import com.kgj0314.e_commerce_backend.application.service.MemberService;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,8 @@ public class MemberServiceTests {
         MemberSignupCommand memberSignupCommand = new MemberSignupCommand(
                 "email@mail.com",
                 "Kim",
-                "1234"
+                "1234",
+                Role.ROLE_USER
         );
 
         Member savedMember = new Member();
@@ -73,6 +75,7 @@ public class MemberServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
 
         when(memberJpaRepository.findById(memberId)).thenReturn(Optional.of(member));
 

@@ -28,6 +28,7 @@ public class MemberService {
         Wallet wallet = new Wallet();
         wallet.setMember(member);
         member.setWallet(wallet);
+        member.setRole(memberSignupCommand.getRole());
         try {
             memberJpaRepository.save(member);
         } catch (DataIntegrityViolationException e) {

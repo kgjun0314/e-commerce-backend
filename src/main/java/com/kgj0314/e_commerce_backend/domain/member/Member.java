@@ -35,8 +35,4 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    public Member() {
-        this.role = Role.ROLE_USER;
-    }
 }

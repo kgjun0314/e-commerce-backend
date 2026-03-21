@@ -7,6 +7,7 @@ import com.kgj0314.e_commerce_backend.application.service.OrderService;
 import com.kgj0314.e_commerce_backend.application.service.StockService;
 import com.kgj0314.e_commerce_backend.application.service.WalletService;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
@@ -98,6 +99,7 @@ public class OrderServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
 
@@ -133,6 +135,7 @@ public class OrderServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
 

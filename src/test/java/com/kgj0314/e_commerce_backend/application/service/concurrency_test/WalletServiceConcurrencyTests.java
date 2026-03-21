@@ -3,6 +3,7 @@ package com.kgj0314.e_commerce_backend.application.service.concurrency_test;
 import com.kgj0314.e_commerce_backend.application.command.WalletChargeCommand;
 import com.kgj0314.e_commerce_backend.application.service.WalletService;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaRepository;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.WalletJpaRepository;
@@ -39,6 +40,7 @@ public class WalletServiceConcurrencyTests {
         member.setEmail("email2@mail.com");
         member.setUsername("Kim");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);

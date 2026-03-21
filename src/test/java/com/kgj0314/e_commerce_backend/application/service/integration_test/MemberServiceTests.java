@@ -4,6 +4,7 @@ import com.kgj0314.e_commerce_backend.application.command.MemberSignupCommand;
 import com.kgj0314.e_commerce_backend.application.dto.MemberResponseDto;
 import com.kgj0314.e_commerce_backend.application.service.MemberService;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.infrastructure.persistence.MemberJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,8 @@ public class MemberServiceTests {
         MemberSignupCommand memberSignupCommand = new MemberSignupCommand(
                 "email@mail.com",
                 "Kim",
-                "1234"
+                "1234",
+                Role.ROLE_USER
         );
 
         // When
@@ -50,13 +52,15 @@ public class MemberServiceTests {
         MemberSignupCommand memberSignupCommand = new MemberSignupCommand(
                 "email@mail.com",
                 "Kim",
-                "1234"
+                "1234",
+                Role.ROLE_USER
         );
 
         MemberSignupCommand memberSignupCommand2 = new MemberSignupCommand(
                 "email2@mail.com",
                 "Kim",
-                "1234"
+                "1234",
+                Role.ROLE_USER
         );
 
         // When & Then
@@ -75,13 +79,15 @@ public class MemberServiceTests {
         MemberSignupCommand memberSignupCommand = new MemberSignupCommand(
                 "email@mail.com",
                 "Kim",
-                "1234"
+                "1234",
+                Role.ROLE_USER
         );
 
         MemberSignupCommand memberSignupCommand2 = new MemberSignupCommand(
                 "email@mail.com",
                 "Lee",
-                "1234"
+                "1234",
+                Role.ROLE_USER
         );
 
         // When & Then

@@ -4,6 +4,7 @@ import com.kgj0314.e_commerce_backend.application.command.OrderCommand;
 import com.kgj0314.e_commerce_backend.application.service.OrderService;
 import com.kgj0314.e_commerce_backend.application.service.WalletService;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import com.kgj0314.e_commerce_backend.domain.stock.Stock;
 import com.kgj0314.e_commerce_backend.domain.wallet.Wallet;
@@ -51,6 +52,7 @@ public class OrderServiceConcurrencyTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
         memberJpaRepository.save(member);
@@ -111,6 +113,7 @@ public class OrderServiceConcurrencyTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
 

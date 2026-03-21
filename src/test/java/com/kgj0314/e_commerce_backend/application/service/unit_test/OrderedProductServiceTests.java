@@ -11,6 +11,7 @@ import com.kgj0314.e_commerce_backend.domain.exception.CannotCancellableStatusEx
 import com.kgj0314.e_commerce_backend.domain.exception.CannotChangeStatusException;
 import com.kgj0314.e_commerce_backend.domain.exception.MemberIdMismatchException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
+import com.kgj0314.e_commerce_backend.domain.member.Role;
 import com.kgj0314.e_commerce_backend.domain.order.Order;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProduct;
 import com.kgj0314.e_commerce_backend.domain.ordered_product.OrderedProductStatus;
@@ -60,6 +61,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
 
@@ -95,6 +97,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
 
@@ -141,6 +144,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
 
@@ -180,6 +184,7 @@ public class OrderedProductServiceTests {
         member.setEmail("email@mail.com");
         member.setUsername("Lee");
         member.setPassword("1234");
+        member.setRole(Role.ROLE_USER);
         member.setWallet(wallet);
         wallet.setMember(member);
 
