@@ -95,12 +95,11 @@ jobs:
       # EC2 배포
       - name: Deploy to EC2
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+          ssh -i ~/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} << EOF
 
-            docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce:latest
 
             docker-compose -f docker-compose.prod.yml down
-            docker-compose -f docker-compose.prod.yml pull
             docker-compose -f docker-compose.prod.yml up -d --force-recreate
 
           EOF
