@@ -100,6 +100,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce:latest
 
             docker-compose -f docker-compose.prod.yml down
+            docker-compose -f docker-compose.prod.yml pull
             docker-compose -f docker-compose.prod.yml up -d
 
           EOF
