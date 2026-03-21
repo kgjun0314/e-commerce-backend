@@ -56,4 +56,10 @@ public class GlobalExceptionHandler {
         ErrorMessageDto errorMessageDto = new ErrorMessageDto(ex.getMessage());
         return new ResponseEntity<>(errorMessageDto, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MemberIdMismatchException.class)
+    public ResponseEntity<ErrorMessageDto> handleMemberIdMismatch(MemberIdMismatchException ex) {
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(ex.getMessage());
+        return new ResponseEntity<>(errorMessageDto, HttpStatus.BAD_REQUEST);
+    }
 }
