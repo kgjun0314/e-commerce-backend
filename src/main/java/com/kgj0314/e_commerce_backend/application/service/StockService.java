@@ -14,6 +14,9 @@ public class StockService {
 
     @Transactional
     public void decreaseQuantity(Stock stock, Long quantity) {
+        if(stock == null) {
+            throw new EntityNotFoundException("존재하지 않는 상품/재고 정보입니다.");
+        }
         stock.decreaseQuantity(quantity);
     }
 
