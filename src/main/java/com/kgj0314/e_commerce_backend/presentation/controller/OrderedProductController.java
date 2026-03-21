@@ -10,6 +10,7 @@ import com.kgj0314.e_commerce_backend.presentation.dto.OrderedProductStatusReque
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -74,7 +75,7 @@ public class OrderedProductController {
     @ApiResponse(responseCode = "200", description = "주문 상품 조회 성공")
     @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
     @GetMapping("/status")
-    public ResponseEntity<OrderedProductPageDto> getOrderedProducts(@ModelAttribute OrderedProductStatusRequestDto OrderedProductStatusRequestDto, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<OrderedProductPageDto> getOrderedProducts(@ModelAttribute OrderedProductStatusRequestDto OrderedProductStatusRequestDto, @ParameterObject @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         OrderedProductStatusQuery orderedProductStatusQuery = new OrderedProductStatusQuery(OrderedProductStatusRequestDto.getStatus());
         OrderedProductPageDto orderedProductPageDto = orderedProductService.getOrderedProducts(orderedProductStatusQuery, pageable);
         return ResponseEntity.ok(orderedProductPageDto);

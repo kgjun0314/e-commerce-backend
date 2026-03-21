@@ -8,6 +8,7 @@ import com.kgj0314.e_commerce_backend.application.dto.ProductResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -30,7 +31,7 @@ public class ProductController {
     @ApiResponse(responseCode = "200", description = "상품 리스트 조회 성공")
     @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
     @GetMapping()
-    public ResponseEntity<ProductPageDto> getProducts(@PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<ProductPageDto> getProducts(@ParameterObject @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         ProductPageDto productPageDto = productService.getProducts(pageable);
         return ResponseEntity.ok(productPageDto);
     }

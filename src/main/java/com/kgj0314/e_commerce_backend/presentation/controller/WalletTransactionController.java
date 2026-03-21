@@ -6,6 +6,7 @@ import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -28,7 +29,7 @@ public class WalletTransactionController {
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
     @GetMapping()
-    public ResponseEntity<WalletTransactionPageDto> getTransactionsPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<WalletTransactionPageDto> getTransactionsPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @ParameterObject @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         WalletTransactionPageDto walletTransactionPageDto = walletTransactionService.getWalletTransactions(customUserDetails.getMember().getId(), pageable);
         return ResponseEntity.ok(walletTransactionPageDto);
     }

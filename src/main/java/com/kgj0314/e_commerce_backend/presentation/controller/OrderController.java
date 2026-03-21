@@ -9,6 +9,7 @@ import com.kgj0314.e_commerce_backend.application.dto.OrderResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -63,7 +64,7 @@ public class OrderController {
     @ApiResponse(responseCode = "200", description = "주문 조회 성공")
     @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
     @GetMapping()
-    public ResponseEntity<OrderPageDto> getOrdersPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<OrderPageDto> getOrdersPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @ParameterObject @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         OrderPageDto orderPageDto = orderService.getOrders(customUserDetails.getMember().getId(), pageable);
         return ResponseEntity.ok(orderPageDto);
     }
