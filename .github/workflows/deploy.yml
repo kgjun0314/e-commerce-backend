@@ -97,7 +97,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
 
-            docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce:${{ github.sha }}
 
             docker-compose -f docker-compose.prod.yml down
             docker-compose -f docker-compose.prod.yml pull
