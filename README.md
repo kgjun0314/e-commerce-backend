@@ -118,8 +118,86 @@ Swagger UI에서 인증 방법:
 ## Troubleshooting
 
 ### 동시 주문 처리 시 재고 불일치 문제
+#### 문제 상황
+여러 사용자가 동시에 동일 상품을 주문할 경우, 재고 수량이 실제 재고와 불일치하는 문제가 발생
+
+#### 원인
+기존 구조에서는 상품 엔티티의 재고 필드를 직접 수정하는 방식이었으며,
+동시 요청 환경에서 트랜잭션 간 충돌이 발생하여 race condition이 발생
+
+#### 해결 방법
+1. 재고 관리를 상품 엔티티에서 분리하여 재고 테이블로 독립
+2. 재고 차감 시 비관적 락(Pessimistic Lock)을 적용하여 동시 접근 제어
+```bash
+@Lock(LockModeType.PESSIMISTIC_WRITE)
+@Query("select s from Stock s where s.product.id = :productId")
+Optional<Stock> findByProductIdWithLock(@Param("productId") Long productId);
+```
+3. 트랜잭션 내에서 재고 차감 로직 수행
+
+#### 결과
+- 동시 요청 상황에서도 데이터 정합성 보장
 
 ### N + 1 문제 및 페이징 처리 이슈
+#### 문제 상황
+일대다 관계에서 엔티티 조회 시 N + 1 문제가 발생
+이를 해결하기 위해 fetch join을 적용했으나, 페이징이 정상적으로 동작하지 않는 문제가 발생
+
+#### 원인
+- 지연 로딩으로 인해 N + 1 문제가 발생
+- fetch join 사용 시 컬렉션 조인이 포함되면 DB 레벨에서 페이징이 불가능
+(중복 row 발생으로 인해 limit/offset이 정확히 적용되지 않는다.)
+
+#### 해결 방법
+1. 1차 쿼리: 페이징을 위해 ID만 조회
+```bash
+@Query("""
+    SELECT o.id FROM Order o
+    WHERE o.member.id = :memberId
+    ORDER BY o.createdDate DESC
+""")
+Page<Long> findOrderIdByMemberId(@Param("memberId") Long memberId, Pageable pageable);
+```
+
+2. 조회된 ID 리스트를 기반으로 IN 절 조회
+```bash
+@Query("""
+    SELECT o FROM Order o
+    JOIN FETCH o.orderedProducts op
+    JOIN FETCH op.product p
+    JOIN FETCH p.stock
+    WHERE o.id in :orderIds
+    ORDER BY o.createdDate DESC
+""")
+List<Order> findByIdListFetchJoin(@Param("orderIds") List<Long> orderIds);
+```
+
+3. 애플리케이션 레벨에서 결과 조합
+```bash
+@Transactional(readOnly = true)
+public OrderPageDto getOrders(Long memberId, Pageable pageable) {
+    Page<Long> orderIdPage = orderJpaRepository.findOrderIdByMemberId(memberId, pageable);
+
+    if(orderIdPage.isEmpty()) {
+        return new OrderPageDto(List.of(), 0, 0, pageable.getPageNumber(), pageable.getPageSize());
+    }
+    List<Order> orders = orderJpaRepository.findByIdListFetchJoin(orderIdPage.getContent());
+
+    List<OrderResponseDto> orderResponseDtoList = orders.stream().map(OrderResponseDto::new).toList();
+    return new OrderPageDto(
+            orderResponseDtoList,
+            orderIdPage.getTotalElements(),
+            orderIdPage.getTotalPages(),
+            orderIdPage.getNumber(),
+            orderIdPage.getSize()
+    );
+}
+```
+
+#### 결과
+- N + 1 문제 해결
+- 페이징 정상 동작
+- 쿼리 수는 2번으로 증가했지만 페이징 가능
 
 ## Getting Started
 
