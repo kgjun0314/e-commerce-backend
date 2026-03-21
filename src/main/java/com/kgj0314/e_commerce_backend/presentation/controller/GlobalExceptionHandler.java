@@ -51,8 +51,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMessageDto, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(ZeroQuantityException.class)
-    public ResponseEntity<ErrorMessageDto> handleZeroQuantity(ZeroQuantityException ex) {
+    @ExceptionHandler(NegativeAmountException.class)
+    public ResponseEntity<ErrorMessageDto> handleZeroQuantity(NegativeAmountException ex) {
         ErrorMessageDto errorMessageDto = new ErrorMessageDto(ex.getMessage());
         return new ResponseEntity<>(errorMessageDto, HttpStatus.BAD_REQUEST);
     }

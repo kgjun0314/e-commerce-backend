@@ -55,7 +55,7 @@ public class ProductController {
     @ApiResponse(responseCode = "201", description = "상품 생성 성공")
     @ApiResponse(responseCode = "403", description = "관리자 권한이 필요합니다.")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto productRequestDto) {
         ProductCommand productCommand
                 = new ProductCommand(

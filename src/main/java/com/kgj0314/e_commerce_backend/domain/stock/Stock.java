@@ -1,7 +1,7 @@
 package com.kgj0314.e_commerce_backend.domain.stock;
 
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughQuantityException;
-import com.kgj0314.e_commerce_backend.domain.exception.ZeroQuantityException;
+import com.kgj0314.e_commerce_backend.domain.exception.NegativeAmountException;
 import com.kgj0314.e_commerce_backend.domain.product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -25,12 +25,15 @@ public class Stock {
     private Product product;
 
     public void increaseQuantity(Long quantity) {
+        if (quantity <= 0) {
+            throw new NegativeAmountException("음수만큼 증가시킬 수 없습니다. (재고 ID: " + this.id + ")");
+        }
         this.quantity += quantity;
     }
 
     public void decreaseQuantity(Long quantity) {
         if (quantity <= 0) {
-            throw new ZeroQuantityException("1개 이상부터 구매 가능합니다. (재고 ID: " + this.id + ")");
+            throw new NegativeAmountException("1개 이상부터 구매 가능합니다. (재고 ID: " + this.id + ")");
         }
         if (this.quantity < quantity) {
             throw new NotEnoughQuantityException("재고가 부족합니다. (재고 ID: " + this.id + ")");

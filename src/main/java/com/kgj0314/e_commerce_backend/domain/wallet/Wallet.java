@@ -1,6 +1,7 @@
 package com.kgj0314.e_commerce_backend.domain.wallet;
 
 import com.kgj0314.e_commerce_backend.domain.BaseEntity;
+import com.kgj0314.e_commerce_backend.domain.exception.NegativeAmountException;
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughBalanceException;
 import com.kgj0314.e_commerce_backend.domain.exception.NotEnoughQuantityException;
 import com.kgj0314.e_commerce_backend.domain.member.Member;
@@ -38,10 +39,16 @@ public class Wallet extends BaseEntity {
     }
 
     public void increaseBalance(Long price) {
+        if(price <= 0) {
+            throw new NegativeAmountException("잔고를 음수만큼 증가시킬 수 없습니다. (지갑 ID: " + this.id + ")");
+        }
         this.balance += price;
     }
 
     public void decreaseBalance(Long price) {
+        if(price <= 0) {
+            throw new NegativeAmountException("잔고를 음수만큼 감소시킬 수 없습니다. (지갑 ID: " + this.id + ")");
+        }
         if (this.balance < price) {
             throw new NotEnoughBalanceException("잔고가 부족합니다. (지갑 ID: " + this.id + ")");
         }
