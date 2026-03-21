@@ -5,6 +5,7 @@ import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.infrastructure.security.JwtUtil;
 import com.kgj0314.e_commerce_backend.presentation.dto.LoginRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class AuthController {
             description = "로그인"
     )
     @ApiResponse(responseCode = "200", description = "로그인 성공")
-    @ApiResponse(responseCode = "404", description = "존재하지 않는 사용자입니다.")
-    @ApiResponse(responseCode = "403", description = "비밀번호가 올바르지 않습니다.")
+    @ApiResponse(responseCode = "403", description = "비밀번호가 올바르지 않습니다.", content = @Content)
+    @ApiResponse(responseCode = "404", description = "존재하지 않는 사용자입니다.", content = @Content)
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto){
         Authentication authentication =

@@ -7,6 +7,7 @@ import com.kgj0314.e_commerce_backend.infrastructure.security.CustomUserDetails;
 import com.kgj0314.e_commerce_backend.presentation.dto.OrderRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.OrderResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -33,8 +34,8 @@ public class OrderController {
             description = "주문을 생성합니다."
     )
     @ApiResponse(responseCode = "201", description = "주문 생성 성공")
-    @ApiResponse(responseCode = "400", description = "주문 실패")
-    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
+    @ApiResponse(responseCode = "400", description = "주문 실패", content = @Content)
+    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.", content = @Content)
     @PostMapping()
     public ResponseEntity<OrderResponseDto> createOrder(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody List<OrderRequestDto> orderRequestDtoList) {
         List<OrderCommand> orderCommandList = orderRequestDtoList
@@ -50,7 +51,7 @@ public class OrderController {
             description = "orderId로 주문을 조회합니다."
     )
     @ApiResponse(responseCode = "200", description = "주문 조회 성공")
-    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
+    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.", content = @Content)
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDto> getOrder(@PathVariable Long id) {
         OrderResponseDto orderResponseDto = orderService.getOrder(id);
@@ -62,7 +63,7 @@ public class OrderController {
             description = "로그인한 사용자의 주문 내역을 조회합니다."
     )
     @ApiResponse(responseCode = "200", description = "주문 조회 성공")
-    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
+    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.", content = @Content)
     @GetMapping()
     public ResponseEntity<OrderPageDto> getOrdersPaging(@AuthenticationPrincipal CustomUserDetails customUserDetails, @ParameterObject @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         OrderPageDto orderPageDto = orderService.getOrders(customUserDetails.getMember().getId(), pageable);

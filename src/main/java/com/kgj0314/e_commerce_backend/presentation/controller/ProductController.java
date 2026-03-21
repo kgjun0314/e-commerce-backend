@@ -6,6 +6,7 @@ import com.kgj0314.e_commerce_backend.application.service.ProductService;
 import com.kgj0314.e_commerce_backend.presentation.dto.ProductRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.ProductResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -29,7 +30,7 @@ public class ProductController {
             description = "상품 리스트를 조회합니다."
     )
     @ApiResponse(responseCode = "200", description = "상품 리스트 조회 성공")
-    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
+    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.", content = @Content)
     @GetMapping()
     public ResponseEntity<ProductPageDto> getProducts(@ParameterObject @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         ProductPageDto productPageDto = productService.getProducts(pageable);
@@ -41,8 +42,8 @@ public class ProductController {
             description = "productId로 상품을 조회합니다."
     )
     @ApiResponse(responseCode = "200", description = "상품 조회 성공")
-    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
-    @ApiResponse(responseCode = "404", description = "존재하지 않는 상품입니다.")
+    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.", content = @Content)
+    @ApiResponse(responseCode = "404", description = "존재하지 않는 상품입니다.", content = @Content)
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id) {
         ProductResponseDto productResponseDto = productService.getProduct(id);
@@ -54,7 +55,7 @@ public class ProductController {
             description = "상품을 생성합니다."
     )
     @ApiResponse(responseCode = "201", description = "상품 생성 성공")
-    @ApiResponse(responseCode = "403", description = "관리자 권한이 필요합니다.")
+    @ApiResponse(responseCode = "403", description = "관리자 권한이 필요합니다.", content = @Content)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto productRequestDto) {

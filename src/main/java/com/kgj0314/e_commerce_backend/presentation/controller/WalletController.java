@@ -7,6 +7,7 @@ import com.kgj0314.e_commerce_backend.presentation.dto.WalletChargeRequestDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletChargeResponseDto;
 import com.kgj0314.e_commerce_backend.application.dto.WalletResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -26,8 +27,8 @@ public class WalletController {
             description = "로그인한 사용자의 잔고를 충전합니다."
     )
     @ApiResponse(responseCode = "200", description = "잔고 충전 성공")
-    @ApiResponse(responseCode = "400", description = "잔고 충전 실패")
-    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
+    @ApiResponse(responseCode = "400", description = "잔고 충전 실패", content = @Content)
+    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.", content = @Content)
     @PatchMapping("/charge")
     public ResponseEntity<WalletChargeResponseDto> chargeWallet(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody WalletChargeRequestDto walletChargeRequestDto) {
         WalletChargeCommand walletChargeCommand = new WalletChargeCommand(walletChargeRequestDto.getAmount());
@@ -40,7 +41,7 @@ public class WalletController {
             description = "로그인한 사용자의 잔고를 조회합니다."
     )
     @ApiResponse(responseCode = "200", description = "잔고 충전 성공")
-    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.")
+    @ApiResponse(responseCode = "403", description = "로그인이 필요합니다.", content = @Content)
     @GetMapping("/balance")
     public ResponseEntity<WalletResponseDto> getBalance(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         WalletResponseDto walletResponseDto = walletService.getWallet(customUserDetails.getMember().getId());
